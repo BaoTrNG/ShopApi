@@ -22,8 +22,9 @@ namespace ShopApp.Frm
         public string Password { get; set; }
         public string RePassword { get; set; }
         public bool IsLogin = true;
-        public bool IsIdValid;
-        public bool IsEmailValid;
+        public bool IsIdValid = false;
+        public bool IsEmailValid = false;
+        public bool IsEmailRegex = false;
         public Login()
         {
             InitializeComponent();
@@ -58,12 +59,14 @@ namespace ShopApp.Frm
                     if (result == "1")
                     {
                         NotiLabel.Text = "User đã tồn tại";
+
                     }
                     else
                     {
                         NotiLabel.Text = "";
                         IsIdValid = true;
                     }
+                    Console.WriteLine("this is before " + IsIdValid);
                 }
             }
         }
@@ -102,11 +105,13 @@ namespace ShopApp.Frm
             if (validate_emailaddress.IsMatch(textBox3.Text) != true)
             {
                 NotiLabel.Text = "Invalid Email Address!";
+
             }
             else
             {
                 Email = textBox3.Text;
-                NotiLabel.Text = "Email Address is valid.";
+                IsEmailRegex = true;
+                NotiLabel.Text = "";
 
             }
         }
@@ -134,12 +139,14 @@ namespace ShopApp.Frm
                     if (result == "1")
                     {
                         NotiLabel2.Text = "Email đã tồn tại";
+
                     }
                     else
                     {
                         NotiLabel2.Text = "";
                         IsEmailValid = true;
                     }
+                    Console.WriteLine("this is before " + IsEmailValid);
                 }
             }
         }
@@ -173,34 +180,57 @@ namespace ShopApp.Frm
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text == "" || textBox2.Text == "" || CrmPass.Text == "" || textBox3.Text == "")
+
+            if (IsLogin == true)
+            {
+                if (textBox1.Text == "" || textBox2.Text == "")
+                {
+                    NotiLabel.Text = "Vui Lòng Điền Hết Thông Tin ";
+                }
+                else
+                {
+                    string Login = "{\"id\":\"" + Program.Username + "\",\"Pass\":\"" + Password + "\"}";
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/login");
+                    httpWebRequest.ContentType = "application/json";
+                    httpWebRequest.Method = "POST";
+                    using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                    {
+                        string json = Login;
+
+                        streamWriter.Write(json);
+                    }
+                    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                    {
+                        var result = streamReader.ReadToEnd();
+                        if (result == "11")
+                        {
+                            NotiLabel.Text = "Login Succeed";
+                        }
+
+                        else
+                        {
+                            NotiLabel.Text = "No User Found";
+                        }
+
+                    }
+                }
+            }
+            else if (IsLogin == false && (textBox1.Text == "" || textBox2.Text == "" || CrmPass.Text == "" || textBox3.Text == ""))
             {
                 NotiLabel.Text = "Vui Lòng Điền Hết Thông Tin ";
-            }
-            else if (IsLogin == true)
-            {
-                string Login = "{\"id\":\"" + Program.Username + "\",\"Pass\":\"" + Password + "\"}";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/login");
-                httpWebRequest.ContentType = "application/json";
-                httpWebRequest.Method = "POST";
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                if (IsEmailValid == false && IsIdValid == false)
                 {
-                    string json = Login;
 
-                    streamWriter.Write(json);
+                    /*IsEmailValid && IsIdValid*/
                 }
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
-                {
-                    var result = streamReader.ReadToEnd();
-                    if (result == "1")
-                        NotiLabel.Text = "Login Succeed";
-                    else NotiLabel.Text = "No User Found";
-                }
+
+
             }
-            else if (IsLogin == false && IsEmailValid && IsIdValid)
+            else if (IsLogin == false && IsEmailValid && IsIdValid && IsEmailRegex)
             {
-                Console.WriteLine("Create");
+                Console.WriteLine("this is emaill " + IsEmailValid);
+                Console.WriteLine("this is id " + IsIdValid);
                 string Type = "USER";
                 string register = "{\"id\":\"" + Program.Username + "\",\"Pass\":\"" + Password + "\",\"Type\":\"" + Type + "\",\"Email\":\"" + Email + "\"}";
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createUser");
@@ -222,8 +252,10 @@ namespace ShopApp.Frm
                 {
                     NotiLabel.Text = "Register Failed";
                 }
-
             }
+            else if (IsEmailRegex == false)
+                NotiLabel.Text = "Kiểm Tra lại Thông Tin email";
+
         }
 
         private void Login_Load(object sender, EventArgs e)
@@ -231,6 +263,7 @@ namespace ShopApp.Frm
             textBox2.UseSystemPasswordChar = true;
             CrmPass.UseSystemPasswordChar = true;
             NotiLabel.Text = "";
+            NotiLabel2.Text = "";
 
             //login mode disable register mode
 
@@ -263,6 +296,7 @@ namespace ShopApp.Frm
 
                 textBox1.Text = "";
                 textBox2.Text = "";
+                textBox3.Text = "";
                 CrmPass.Text = "";
                 label4.Text = "";
 
@@ -272,7 +306,10 @@ namespace ShopApp.Frm
             else
             {
                 IsLogin = false;
-
+                textBox1.Text = "";
+                textBox2.Text = "";
+                textBox3.Text = "";
+                CrmPass.Text = "";
                 RePassLabel.Visible = true;
                 CrmPass.Visible = true;
                 textBox3.Visible = true;
@@ -280,8 +317,7 @@ namespace ShopApp.Frm
                 SwitchBtn.Text = "Login";
                 NotiLabel.Text = "";
 
-                textBox1.Text = "";
-                textBox2.Text = "";
+
                 label4.Text = "Email";
             }
             Console.WriteLine(IsLogin);
