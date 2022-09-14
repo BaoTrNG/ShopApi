@@ -216,46 +216,42 @@ namespace ShopApp.Frm
                     }
                 }
             }
-            else if (IsLogin == false && (textBox1.Text == "" || textBox2.Text == "" || CrmPass.Text == "" || textBox3.Text == ""))
-            {
-                NotiLabel.Text = "Vui Lòng Điền Hết Thông Tin ";
-                if (IsEmailValid == false && IsIdValid == false)
-                {
-
-                    /*IsEmailValid && IsIdValid*/
-                }
-
-
-            }
             else if (IsLogin == false && IsEmailValid && IsIdValid && IsEmailRegex)
             {
-                Console.WriteLine("this is emaill " + IsEmailValid);
-                Console.WriteLine("this is id " + IsIdValid);
-                string Type = "USER";
-                string register = "{\"id\":\"" + Program.Username + "\",\"Pass\":\"" + Password + "\",\"Type\":\"" + Type + "\",\"Email\":\"" + Email + "\"}";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createUser");
-                httpWebRequest.ContentType = "application/json";
-                httpWebRequest.Method = "POST";
-                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                {
-                    string json = register;
-
-                    streamWriter.Write(json);
-                }
-                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                Console.WriteLine(httpResponse.StatusCode);
-                if ((int)httpResponse.StatusCode == 200)
-                {
-                    NotiLabel.Text = "Register Succeed";
-                }
+                if (textBox1.Text == "" || textBox2.Text == "" || CrmPass.Text == "" || textBox3.Text == "")
+                    NotiLabel.Text = "Vui Lòng Điền Hết Thông Tin ";
                 else
                 {
-                    NotiLabel.Text = "Register Failed";
+                    Console.WriteLine("this is emaill " + IsEmailValid);
+                    Console.WriteLine("this is id " + IsIdValid);
+                    string Type = "USER";
+                    string register = "{\"id\":\"" + Program.Username + "\",\"Pass\":\"" + Password + "\",\"Type\":\"" + Type + "\",\"Email\":\"" + Email + "\"}";
+                    var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createUser");
+                    httpWebRequest.ContentType = "application/json";
+                    httpWebRequest.Method = "POST";
+                    using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                    {
+                        string json = register;
+
+                        streamWriter.Write(json);
+                    }
+                    var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                    Console.WriteLine(httpResponse.StatusCode);
+                    if ((int)httpResponse.StatusCode == 200)
+                    {
+                        NotiLabel.Text = "Register Succeed";
+                    }
+                    else
+                    {
+                        NotiLabel.Text = "Register Failed";
+                    }
                 }
             }
-            else if (IsEmailRegex == false)
-                NotiLabel.Text = "Kiểm Tra lại Thông Tin email";
-
+            else if (!IsEmailRegex)
+            {
+                NotiLabel.Text = "Invalid Email Address!";
+            }
+            else NotiLabel.Text = "";
         }
 
         private void Login_Load(object sender, EventArgs e)
