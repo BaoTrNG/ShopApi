@@ -51,21 +51,21 @@ app.MapPost("/api/login", async (ServiceLogin login, Users user) =>
 });
 
 
-app.MapGet("/api/create/checkid/{id}", async (ServiceLogin registration, String id) =>
+
+app.MapPost("/api/create/checkid", async (ServiceLogin registration, Users user) =>
 {
-    var Check = await registration.CheckId(id);
+    var Check = await registration.CheckIdJson(user);
     return Check is null ? 0 : 1;
 });
-
-app.MapGet("/api/create/checkemail/{email}", async (ServiceLogin registration, String email) =>
+app.MapPost("/api/create/checkemail", async (ServiceLogin registration, Users user) =>
 {
-    var Check = await registration.CheckEmail(email);
+    var Check = await registration.CheckEmailJson(user);
     return Check is null ? 0 : 1;
 });
 
 
 //Create new User
-app.MapPost("/api/movies", async (ServiceLogin service, Users user) =>
+app.MapPost("/api/createUser", async (ServiceLogin service, Users user) =>
 {
     await service.Create(user);
     return Results.Ok();

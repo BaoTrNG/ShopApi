@@ -4,10 +4,9 @@ namespace TestAPI.ModelClass
     public class Items
     {
         [BsonId]
-        [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
-        public string Name { get; set; }
-        public string Price { get; set; }
-        public string Remain { get; set; }
+        public string Id { get; set; }
+        public double Price { get; set; }
+        public int Remain { get; set; }
 
     }
 }

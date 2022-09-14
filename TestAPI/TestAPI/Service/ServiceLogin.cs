@@ -31,11 +31,12 @@ namespace TestAPI.Data
         public async Task Create(Users user) =>
           await _users.InsertOneAsync(user);
         //check id if exist
-        public async Task<Users> CheckId(string id) =>
-           await _users.Find(m => m.Id == id).FirstOrDefaultAsync();
+
+        public async Task<Users> CheckIdJson(Users user) =>
+          await _users.Find(m => m.Id == user.Id).FirstOrDefaultAsync();
         //check email if exist
-        public async Task<Users> CheckEmail(string email) =>
-          await _users.Find(m => m.Email == email).FirstOrDefaultAsync();
+        public async Task<Users> CheckEmailJson(Users user) =>
+          await _users.Find(m => m.Email == user.Email).FirstOrDefaultAsync();
         ///
 
 
