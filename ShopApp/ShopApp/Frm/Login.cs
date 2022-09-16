@@ -18,13 +18,13 @@ namespace ShopApp.Frm
     public partial class Login : Form
     {
 
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string RePassword { get; set; }
-        public bool IsLogin = true;
-        public bool IsIdValid = false;
-        public bool IsEmailValid = false;
-        public bool IsEmailRegex = false;
+        private string Email { get; set; }
+        private string Password { get; set; }
+        private string RePassword { get; set; }
+        private bool IsLogin = true;
+        private bool IsIdValid = false;
+        private bool IsEmailValid = false;
+        private bool IsEmailRegex = false;
         public Login()
         {
             InitializeComponent();
