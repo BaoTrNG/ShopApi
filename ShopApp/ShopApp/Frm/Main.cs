@@ -19,12 +19,14 @@ namespace ShopApp.Frm
 {
     public partial class Main : Form
     {
+
         public Main()
         {
 
             InitializeComponent();
-        }
 
+        }
+        Shop Shopfrm = new Shop();
         private void Main_Load(object sender, EventArgs e)
         {
 
@@ -54,23 +56,31 @@ namespace ShopApp.Frm
                     } */
 
             }
-
-
-        }
-
-        private void barButtonItem3_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
-
-        }
-
-        private void barButtonItem1_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
-        {
+            Shopfrm.ShowInTaskbar = false;
+            Shopfrm.Show();
 
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Close();
+
+            /*   if (Application.OpenForms["Shop"] == null)
+               {
+                   Console.WriteLine("Shopfrm " + Shopfrm.Location);
+                   Console.WriteLine("this " + this.Location);
+                   //  Console.WriteLine(panel2.Location);
+
+                   Shopfrm.Show();
+               }
+               else
+               {
+                   Console.WriteLine("Shopfrm " + Shopfrm.Location);
+                   Console.WriteLine("this " + this.Location);
+                   Console.WriteLine("ds");
+
+               } */
+
+
         }
     }
 }

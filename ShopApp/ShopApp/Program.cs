@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ShopApp.Frm;
+using ShopApp.Frm.UserFrm;
 namespace ShopApp
 {
     internal static class Program
@@ -22,6 +23,7 @@ namespace ShopApp
             Application.SetCompatibleTextRenderingDefault(false);
             //  Application.Run(new Login());
             Application.Run(new Main());
+            //  Application.Run(new Shop());
         }
     }
 }
