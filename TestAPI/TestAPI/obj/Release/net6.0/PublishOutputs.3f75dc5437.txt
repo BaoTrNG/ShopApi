@@ -14,6 +14,8 @@ D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\MongoDB.Driver.dll
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\MongoDB.Driver.Core.dll
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\MongoDB.Libmongocrypt.dll
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\SharpCompress.dll
+D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\System.Text.Encodings.Web.dll
+D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\System.Text.Json.dll
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\linux\native\libsnappy64.so
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\linux\native\libzstd.so
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\osx\native\libsnappy64.dylib
@@ -24,3 +26,4 @@ D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\win\native\sna
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\linux\native\libmongocrypt.so
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\osx\native\libmongocrypt.dylib
 D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\win\native\mongocrypt.dll
+D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\PubTmp\Out\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll

@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Dapplo.Windows.EmbeddedBrowser</name>
+    </assembly>
+    <members>
+        <member name="T:Dapplo.Windows.EmbeddedBrowser.ExtendedWebBrowser">
+            <summary>
+                Used to show an extended embedded web-browser
+                See <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms683797.aspx">here</a>
+                for more information on this interface
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.ExtendedWebBrowser.CreateWebBrowserSiteBase">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.EmbeddedBrowser.ExtendedWebBrowser.ExtendedWebBrowserSite">
+            <summary>
+            Internal class
+            </summary>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.ExtendedWebBrowser.ExtendedWebBrowserSite.#ctor(System.Windows.Forms.WebBrowser)">
+            <summary>
+            This creates an Extended WebBroser
+            </summary>
+            <param name="webBrowser">WebBrowser</param>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.ExtendedWebBrowser.ExtendedWebBrowserSite.QueryStatus(System.Guid,System.Int32,System.IntPtr,System.IntPtr)">
+            <inheritdoc />
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.ExtendedWebBrowser.ExtendedWebBrowserSite.Exec(System.Guid,System.Int32,System.Int32,System.IntPtr,System.IntPtr)">
+            <inheritdoc />
+        </member>
+        <member name="T:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion">
+            <summary>
+            Helper class for the Internet Explorer version
+            </summary>
+        </member>
+        <member name="P:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion.Version">
+            <summary>
+                Get the version of the Internet Explorer
+            </summary>
+            <returns>int with browser version</returns>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion.GetEmbVersion(System.Boolean)">
+            <summary>
+                Get the highest possible version for the embedded browser
+            </summary>
+            <param name="ignoreDoctype">true to ignore the doctype when loading a page</param>
+            <returns>IE Feature</returns>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion.ChangeEmbeddedVersion(System.Boolean)">
+            <summary>
+                Change browser version to the highest possible
+            </summary>
+            <param name="ignoreDoctype">true to ignore the doctype when loading a page</param>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion.ChangeEmbeddedVersion(System.String,System.Boolean)">
+            <summary>
+                Change the browser version for the specified application
+            </summary>
+            <param name="applicationName">Name of the process</param>
+            <param name="ignoreDoctype">true to ignore the doctype when loading a page</param>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion.ChangeEmbeddedVersion(System.String,System.Int32)">
+            <summary>
+                Fix the browser version for the specified application
+            </summary>
+            <param name="applicationName">Name of the process</param>
+            <param name="ieVersion">
+                Version, see
+                <a href="https://msdn.microsoft.com/en-us/library/ee330730(v=vs.85).aspx#browser_emulation">Browser Emulation</a>
+            </param>
+        </member>
+        <member name="M:Dapplo.Windows.EmbeddedBrowser.InternetExplorerVersion.ModifyRegistry(System.String,System.String,System.Int32)">
+            <summary>
+                Make the change to the registry
+            </summary>
+            <param name="root">HKEY_CURRENT_USER or something</param>
+            <param name="applicationName">Name of the executable</param>
+            <param name="ieFeatureVersion">Version to use</param>
+        </member>
+    </members>
+</doc>

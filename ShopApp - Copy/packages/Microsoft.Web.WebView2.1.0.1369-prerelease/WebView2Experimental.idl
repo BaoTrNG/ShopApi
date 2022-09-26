@@ -1,0 +1,499 @@
+// Copyright (C) Microsoft Corporation. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+// These are the WebView2 experimental APIs published publicly as a part of the
+// WebView2 prerelease package. Modifications to any published interface require
+// a breaking change for the experimental APIs. Otherwise, do not modify
+// published interfaces.
+
+// midl is run from a tools directory with no special include paths setup.
+// To import an IDL from the build you must get out of the tools path
+// first.
+// We include the shipping webview2.idl so that our preview APIs may
+// interact with our public APIs.
+import "../../edge_embedded_browser/client/win/current/webview2.idl";
+
+[uuid(07abc5eb-fae4-4485-bf29-083ac335408b), version(1.0)]
+library WebView2Experimental {
+
+// Forward declarations
+
+interface ICoreWebView2Experimental5;
+interface ICoreWebView2Experimental16;
+interface ICoreWebView2ExperimentalCompositionController4;
+interface ICoreWebView2ExperimentalController2;
+interface ICoreWebView2ExperimentalEnvironment3;
+interface ICoreWebView2ExperimentalWebResourceRequestedEventArgs;
+interface ICoreWebView2ExperimentalUpdateRuntimeCompletedHandler;
+interface ICoreWebView2ExperimentalUpdateRuntimeResult;
+
+// Enums and structs
+/// Specifies the source of `WebResourceRequested` event.
+[v1_enum]
+typedef enum COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS {
+  COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_NONE = 0,
+
+  /// Indicates that web resource is requested from main page including dedicated workers and iframes.
+  COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_DOCUMENT = 1,
+
+  /// Indicates that web resource is requested from shared worker.
+  COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_SHARED_WORKER = 2,
+
+  /// Indicates that web resource is requested from service worker.
+  COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_SERVICE_WORKER = 4,
+
+  /// Indicates that web resource is requested from any supported source.
+  COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_ALL = 0XFFFFFFFF
+} COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS;
+cpp_quote("DEFINE_ENUM_FLAG_OPERATORS(COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS);")
+
+/// Matrix that represents a 3D transform. This transform is used to
+/// calculate correct coordinates when calling
+/// CreateCoreWebView2PointerInfoFromPointerId. This is equivalent to a
+/// D2D1_MATRIX_4X4_F
+typedef struct COREWEBVIEW2_MATRIX_4X4 {
+  /// The value in the first row and first column of the matrix.
+  FLOAT _11;
+  /// The value in the first row and second column of the matrix.
+  FLOAT _12;
+  /// The value in the first row and third column of the matrix.
+  FLOAT _13;
+  /// The value in the first row and fourth column of the matrix.
+  FLOAT _14;
+  /// The value in the second row and first column of the matrix.
+  FLOAT _21;
+  /// The value in the second row and second column of the matrix.
+  FLOAT _22;
+  /// The value in the second row and third column of the matrix.
+  FLOAT _23;
+  /// The value in the second row and fourth column of the matrix.
+  FLOAT _24;
+  /// The value in the third row and first column of the matrix.
+  FLOAT _31;
+  /// The value in the third row and second column of the matrix.
+  FLOAT _32;
+  /// The value in the third row and third column of the matrix.
+  FLOAT _33;
+  /// The value in the third row and fourth column of the matrix.
+  FLOAT _34;
+  /// The value in the fourth row and first column of the matrix.
+  FLOAT _41;
+  /// The value in the fourth row and second column of the matrix.
+  FLOAT _42;
+  /// The value in the fourth row and third column of the matrix.
+  FLOAT _43;
+  /// The value in the fourth row and fourth column of the matrix.
+  FLOAT _44;
+} COREWEBVIEW2_MATRIX_4X4;
+
+/// Status of UpdateRuntime operation result.
+[v1_enum]
+typedef enum COREWEBVIEW2_UPDATE_RUNTIME_STATUS {
+  /// Latest version of Edge WebView2 Runtime is installed.
+  /// No update for Edge WebView2 Runtime is available, or Edge WebView2
+  /// Runtime is updated successfully and latest version is now installed.
+  COREWEBVIEW2_UPDATE_RUNTIME_STATUS_LATEST_VERSION_INSTALLED,
+
+  /// Edge WebView2 Runtime update is already running, which could be
+  /// triggered by auto update or by other UpdateRuntime request from some app.
+  COREWEBVIEW2_UPDATE_RUNTIME_STATUS_UPDATE_ALREADY_RUNNING,
+
+  /// Edge WebView2 Runtime update is blocked by group policy.
+  COREWEBVIEW2_UPDATE_RUNTIME_STATUS_BLOCKED_BY_POLICY,
+
+  /// Edge WebView2 Runtime update failed.
+  /// See `ExtendedError` property of UpdateRuntimeResult for more
+  /// information about the failure.
+  COREWEBVIEW2_UPDATE_RUNTIME_STATUS_FAILED,
+} COREWEBVIEW2_UPDATE_RUNTIME_STATUS;
+
+/// Specifies memory usage target level of WebView.
+[v1_enum]
+typedef enum COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL {
+  /// Specifies normal memory usage target level.
+  COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_NORMAL,
+
+  /// Specifies low memory usage target level.
+  /// Used for inactivate WebView for reduced memory consumption.
+  COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_LOW,
+
+} COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL;
+// End of enums and structs
+
+/// This interface is an extension of `ICoreWebView2` that manages memory usage
+/// target level.
+[uuid(E05E04CA-7924-4C04-A84C-A90572DBA22A), object, pointer_default(unique)]
+interface ICoreWebView2Experimental5 : IUnknown {
+
+  /// `MemoryUsageTargetLevel` indicates desired memory consumption level of
+  /// WebView.
+  [propget] HRESULT MemoryUsageTargetLevel(
+      [out, retval] COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL* level);
+
+  /// An app may set `MemoryUsageTargetLevel` to indicate desired memory
+  /// consumption level of WebView. Scripts will not be impacted and continue
+  /// to run. This is useful for inactive apps that still want to run scripts
+  /// and/or keep network connections alive and therefore could not call
+  /// `TrySuspend` and `Resume` to reduce memory consumption. These apps can
+  /// set memory usage target level to `COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_LOW`
+  /// when the app becomes inactive, and set back to
+  /// `COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_NORMAL` when the app becomes
+  /// active. It is not necessary to set CoreWebView2Controller's IsVisible
+  /// property to false when setting the property.
+  /// It is a best effort operation to change memory usage level, and the
+  /// API will return before the operation completes.
+  /// Setting the level to `COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_LOW`
+  /// could potentially cause memory for some WebView browser processes to be
+  /// swapped out to disk in some circumstances.
+  /// It is a best effort to reduce memory usage as much as possible. If a script
+  /// runs after its related memory has been swapped out, the memory will be swapped
+  /// back in to ensure the script can still run, but performance might be impacted.
+  /// Therefore, the app should set the level back to
+  /// `COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL_NORMAL` when the app becomes
+  /// active again. Setting memory usage target level back to normal will not happen
+  /// automatically.
+  /// An app should choose to use either the combination of `TrySuspend` and `Resume`
+  /// or the combination of setting MemoryUsageTargetLevel to low and normal. It is
+  /// not advisable to mix them.
+  /// Trying to set `MemoryUsageTargetLevel` while suspended will be ignored.
+  /// The `TrySuspend` and `Resume` methods will change the `MemoryUsageTargetLevel`.
+  /// `TrySuspend` will automatically set `MemoryUsageTargetLevel` to low while
+  /// `Resume` on suspended WebView will automatically set `MemoryUsageTargetLevel`
+  /// to normal. Calling `Resume` when the WebView is not suspended would not change
+  /// `MemoryUsageTargetLevel`.
+  ///
+  /// \snippet ViewComponent.cpp MemoryUsageTargetLevel
+  [propput] HRESULT MemoryUsageTargetLevel(
+      [in] COREWEBVIEW2_MEMORY_USAGE_TARGET_LEVEL level);
+
+}
+
+/// The UpdateRuntime operation result.
+[uuid(DD503E49-AB19-47C0-B2AD-6DDD09CC3E3A), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalUpdateRuntimeResult : IUnknown {
+
+  /// The status for the UpdateRuntime operation.
+  [propget] HRESULT Status(
+      [out, retval] COREWEBVIEW2_UPDATE_RUNTIME_STATUS* status);
+
+  /// The update error that occurred while trying to update Edge WebView2 Runtime.
+  /// ExtendedError will be S_OK if Status is not `COREWEBVIEW2_UPDATE_RUNTIME_STATUS_FAILED`
+  /// or `COREWEBVIEW2_UPDATE_RUNTIME_STATUS_BLOCKED_BY_POLICY`.
+  [propget] HRESULT ExtendedError([out, retval] HRESULT* error);
+}
+
+/// The caller implements this interface to receive the UpdateRuntime result.
+[uuid(F1D2D722-3721-499C-87F5-4C405260697A), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalUpdateRuntimeCompletedHandler : IUnknown {
+
+  /// Provides the result for the UpdateRuntime operation.
+  /// `errorCode` will be S_OK if the update operation can be performed
+  /// normally, regardless of whether we could update the Edge WebView2
+  /// Runtime. If an unexpected error interrupts the update operation, error
+  /// code of that unexpected error would be set as `errorCode`.
+  /// When update operation can be performed normally, but update resulted in
+  /// failure, like download failed, the error code would be presented as
+  /// `ExtendedError` property of ICoreWebView2ExperimentalUpdateRuntimeResult.
+  HRESULT Invoke([in] HRESULT errorCode,
+                 [in] ICoreWebView2ExperimentalUpdateRuntimeResult* result);
+}
+
+/// This interface is an extension of the ICoreWebView2Environment that manages
+/// updating Edge WebView2 Runtime. An object implementing the
+/// ICoreWebView2ExperimentalEnvironment3 interface will also implement
+/// ICoreWebView2Environment.
+[uuid(9A2BE885-7F0B-4B26-B6DD-C969BAA00BF1), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalEnvironment3 : IUnknown {
+  /// Try to update the installed Microsoft Edge WebView2 Runtime.
+  /// This will potentially result in a new version of the Edge WebView2
+  /// Runtime being installed and `NewBrowserVersionAvailable` event being raised.
+  /// There is no guarantee on the order of that event being raised and
+  /// UpdateRuntime's completed handler being invoked. Besides the
+  /// `NewBrowserVersionAvailable` event, there will be no impact to any
+  /// currently running WebView2s when the update is installed.
+  /// Even though the Edge WebView2 Runtime update is installed for the machine
+  /// and available to all users, the update will happen silently and not show
+  /// elevation prompt.
+  /// This will not impact Edge browser installations.
+  /// The latest version can always be queried using the
+  /// `GetAvailableCoreWebView2BrowserVersionString` API.
+  /// The UpdateRuntime method is only supported for an installed Edge WebView2
+  /// Runtime. When running a fixed version Edge WebView2 Runtime or non stable
+  /// channel Edge browser, this API will return `HRESULT_FROM_WIN32(ERROR_NOT_SUPPORTED)`.
+  /// There could only be one active UpdateRuntime operation in an app process,
+  /// and calling this API before the completed handler for a previous call is invoked
+  /// will fail with `HRESULT_FROM_WIN32(ERROR_BUSY)`.
+  /// Calling this API repeatedly in a short period of time, will also fail with
+  /// `HRESULT_FROM_WIN32(ERROR_BUSY)`. To protect accidental abuse of the update
+  /// service, the implementation throttles the calls of this API to 3 times within
+  /// 5 minutes in a process. The exact throttling limit can change in the future.
+  /// Edge update service can only support one update request at a time globally.
+  /// If there is already an update operation running in the Edge update service,
+  /// UpdateRuntime request will result in the completed handler being invoked with a
+  /// result that has `Status` of `COREWEBVIEW2_UPDATE_RUNTIME_STATUS_UPDATE_ALREADY_RUNNING`.
+  /// As the running update could succeed or fail, the app should retry later if
+  /// `NewBrowserVersionAvailable` event has not been raised.
+  /// The UpdateRuntime operation is associated with the CoreWebView2Environment
+  /// object and any ongoing UpdateRuntime operation will be aborted when the
+  /// associated CoreWebView2Environment along with the CoreWebView2 objects that
+  /// are created by the CoreWebView2Environment object are all released. In this
+  /// case, the completed handler will be invoked with `S_OK` as `errorCode` and a
+  /// result object with `Status` of COREWEBVIEW2_UPDATE_RUNTIME_STATUS_FAILED and
+  /// `ExtendedError` as `E_ABORT`.
+  ///
+  /// \snippet AppWindow.cpp UpdateRuntime
+  HRESULT UpdateRuntime(
+      [in] ICoreWebView2ExperimentalUpdateRuntimeCompletedHandler* handler);
+}
+
+/// This interface is an extension of the ICoreWebView2CompositionController.
+/// An object implementing ICoreWebView2ExperimentalCompositionController4
+/// interface will also implement ICoreWebView2CompositionController.
+[uuid(e6041d7f-18ac-4654-a04e-8b3f81251c33), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalCompositionController4 : IUnknown {
+  /// Returns the UI Automation Provider for the WebView.
+  [propget] HRESULT AutomationProvider([out, retval] IUnknown** provider);
+
+  /// A helper function to convert a pointerId received from the system into
+  /// an ICoreWebView2ExperimentalPointerInfo.
+  /// parentWindow is the HWND that contains the WebView. This can be any HWND
+  /// in the hwnd tree that contains the WebView.
+  /// The COREWEBVIEW2_MATRIX_4X4 is the transform from that HWND to the WebView.
+  /// The returned ICoreWebView2ExperimentalPointerInfo is used in SendPointerInfo.
+  /// The pointer type must be either pen or touch or the function will fail.
+  HRESULT CreateCoreWebView2PointerInfoFromPointerId(
+      [in] UINT pointerId,
+      [in] HWND parentWindow,
+      [in] struct COREWEBVIEW2_MATRIX_4X4 transform,
+      [out, retval] ICoreWebView2PointerInfo** pointerInfo);
+}
+
+/// Represents the registration of a custom scheme with the
+/// CoreWebView2Environment.
+/// This allows the WebView2 app to be able to handle WebResourceRequested
+/// event for requests with the specified scheme and be able to navigate the
+/// WebView2 to the custom scheme. Once the environment is created, the
+/// registrations are valid and immutable throughout the lifetime of the
+/// associated WebView2s' browser process and any WebView2 environments
+/// sharing the browser process must be created with identical custom scheme
+/// registrations, otherwise the environment creation will fail.
+/// Any further attempts to register the same scheme will fail during environment creation.
+/// The URIs of registered custom schemes will be treated similar to http
+/// URIs for their origins.
+/// They will have tuple origins for URIs with host and opaque origins for
+/// URIs without host as specified in
+/// [7.5 Origin - HTML Living Standard](https://html.spec.whatwg.org/multipage/origin.html)
+/// Example:
+/// `custom-scheme-with-host://hostname/path/to/resource` has origin of
+/// `custom-scheme-with-host://hostname`
+/// `custom-scheme-without-host:path/to/resource` has origin of
+/// `custom-scheme-without-host:path/to/resource`
+/// For WebResourceRequested event, the cases of request URIs and filter URIs
+/// with custom schemes will be normalized according to generic URI syntax
+/// rules. Any non-ASCII characters will be preserved.
+/// The registered custom schemes also participate in
+/// [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) and
+/// adheres to [CSP](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP).
+/// The app needs to set the appropriate access headers in its
+/// WebResourceRequested event handler to allow CORS requests.
+/// \snippet AppWindow.cpp CoreWebView2CustomSchemeRegistration
+[uuid(d60ac92c-37a6-4b26-a39e-95cfe59047bb), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalCustomSchemeRegistration : IUnknown {
+  /// The name of the custom scheme to register.
+  [propget] HRESULT SchemeName([out, retval] LPWSTR* schemeName);
+
+  /// Whether the sites with this scheme will be treated as a
+  /// [Secure Context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts)
+  /// like an HTTPS site.
+  /// `false` by default.
+  [propget] HRESULT TreatAsSecure([out, retval] BOOL* treatAsSecure);
+  /// Set if the scheme will be treated as a Secure Context.
+  [propput] HRESULT TreatAsSecure([in] BOOL value);
+
+  /// List of origins that are allowed to issue requests with the custom
+  /// scheme, such as XHRs and subresource requests that have an Origin header.
+  /// The origin of any request (requests that have the
+  /// [Origin header](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Origin))
+  /// to the custom scheme URI needs to be in this list. No-origin requests
+  /// are requests that do not have an Origin header, such as link
+  /// navigations, embedded images and are always allowed.
+  /// Note that cross-origin restrictions still apply.
+  /// From any opaque origin (Origin header is null), no cross-origin requests
+  /// are allowed.
+  /// If the list is empty, no cross-origin request to this scheme is
+  /// allowed.
+  /// Origins are specified as a string in the format of
+  /// scheme://host:port.
+  /// The origins are string pattern matched with `*` (matches 0 or more
+  /// characters) and `?` (matches 0 or 1 character) wildcards just like
+  /// the URI matching in the
+  /// [AddWebResourceRequestedFilter API](https://docs.microsoft.com/en-us/dotnet/api/microsoft.web.webview2.core.corewebview2.addwebresourcerequestedfilter).
+  /// For example, "http://*.example.com:80".
+  /// Here's a set of examples of what is allowed and not:
+  /// | Request URI | Originating URL | AllowedOrigins | Allowed
+  /// | -- | -- | -- | -- |
+  /// | `custom-scheme:request` | `https://www.example.com` | {"https://www.example.com"} | Yes
+  /// | `custom-scheme:request` | `https://www.example.com` | {"https://*.example.com"} | Yes
+  /// | `custom-scheme:request` | `https://www.example.com` | {"https://www.example2.com"} | No
+  /// | `custom-scheme-with-authority://host/path` | `custom-scheme-with-authority://host2` | {""} | No
+  /// | `custom-scheme-with-authority://host/path` | `custom-scheme-with-authority2://host` | {"custom-scheme-with-authority2://*"} | Yes
+  /// | `custom-scheme-without-authority:path` | custom-scheme-without-authority:path2 | {"custom-scheme-without-authority:*"} | No
+  /// | `custom-scheme-without-authority:path` | custom-scheme-without-authority:path2 | {"*"} | Yes
+  /// The returned strings and the array itself must be deallocated with
+  /// CoTaskMemFree.
+  HRESULT GetAllowedOrigins(
+    [out] UINT32* allowedOriginsCount,
+    [out] LPWSTR** allowedOrigins);
+  /// Set the array of origins that are allowed to use the scheme.
+  HRESULT SetAllowedOrigins(
+    [in] UINT32 allowedOriginsCount,
+    [in] LPCWSTR* allowedOrigins);
+
+  /// Set this property to `true` if the URIs with this custom
+  /// scheme will have an authority component (a host for custom schemes).
+  /// Specifically, if you have a URI of the following form you should set the
+  /// `HasAuthorityComponent` value as listed.
+  /// | URI | Recommended HasAuthorityComponent value |
+  /// | -- | -- |
+  /// | `custom-scheme-with-authority://host/path` | `true` |
+  /// | `custom-scheme-without-authority:path` | `false` |
+  /// When this property is set to `true`, the URIs with this scheme will be
+  /// interpreted as having a
+  /// [scheme and host](https://html.spec.whatwg.org/multipage/origin.html#concept-origin-tuple)
+  /// origin similar to an http URI. Note that the port and user
+  /// information are never included in the computation of origins for
+  /// custom schemes.
+  /// If this property is set to `false`, URIs with this scheme will have an
+  /// [opaque origin](https://html.spec.whatwg.org/multipage/origin.html#concept-origin-opaque)
+  /// similar to a data URI.
+  /// This property is `false` by default.
+  ///
+  /// Note: For custom schemes registered as having authority component,
+  /// navigations to URIs without authority of such custom schemes will fail.
+  /// However, if the content inside WebView2 references
+  /// a subresource with a URI that does not have
+  /// an authority component, but of a custom scheme that is registered as
+  /// having authority component, the URI will be interpreted as a relative path
+  /// as specified in [RFC3986](https://www.rfc-editor.org/rfc/rfc3986).
+  /// For example, custom-scheme-with-authority:path will be interpreted
+  /// as custom-scheme-with-authority://host/path
+  /// However, this behavior cannot be guaranteed to remain in future
+  /// releases so it is recommended not to rely on this behavior.
+  [propget] HRESULT HasAuthorityComponent([out, retval] BOOL* hasAuthorityComponent);
+  /// Get has authority component
+  [propput] HRESULT HasAuthorityComponent([in] BOOL  hasAuthorityComponent);
+}
+
+/// This interface is an extension of `ICoreWebView2` that allows to
+/// set filters in order to receive WebResourceRequested events for
+/// service workers, shared workers and different origin iframes.
+[uuid(679ddf3f-9044-486f-8458-16653a0e1603), object, pointer_default(unique)]
+interface ICoreWebView2Experimental16 : IUnknown {
+  /// A web resource request with a resource context that matches this
+  /// filter's resource context and a URI that matches this filter's URI
+  /// wildcard string for corresponding request sources will be raised via
+  /// the `WebResourceRequested` event. To receive all raised events filters
+  /// have to be added before main page navigation.
+  ///
+  /// The `uri` parameter value is a wildcard string matched against the URI
+  /// of the web resource request. This is a glob style
+  /// wildcard string in which a `*` matches zero or more characters and a `?`
+  /// matches exactly one character.
+  /// These wildcard characters can be escaped using a backslash just before
+  /// the wildcard character in order to represent the literal `*` or `?`.
+  ///
+  /// The matching occurs over the URI as a whole string and not limiting
+  /// wildcard matches to particular parts of the URI.
+  /// The wildcard filter is compared to the URI after the URI has been
+  /// normalized, any URI fragment has been removed, and non-ASCII hostnames
+  /// have been converted to punycode.
+  ///
+  /// Specifying a `nullptr` for the uri is equivalent to an empty string which
+  /// matches no URIs.
+  ///
+  /// For more information about resource context filters, navigate to
+  /// [COREWEBVIEW2_WEB_RESOURCE_CONTEXT](/microsoft-edge/webview2/reference/win32/icorewebview2#corewebview2_web_resource_context).
+  ///
+  /// The `requestSourceKinds` is a mask of one or more
+  /// `COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS`. OR operation(s) can be
+  /// applied to multiple `COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS` to
+  /// create a mask representing those data types. API returns `E_INVALIDARG` if
+  /// `requestSourceKinds` equals to zero. For more information about request
+  /// source kinds, navigate to
+  /// [COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS](/microsoft-edge/webview2/reference/win32/icorewebview2#corewebview2_web_resource_request_source_kinds).
+  ///
+  /// Because service workers and shared workers run separately from any one
+  /// HTML document their WebResourceRequested will be raised for all
+  /// CoreWebView2s that have appropriate filters added in the corresponding
+  /// CoreWebView2Environment. You should only add a WebResourceRequested filter
+  /// for COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_SERVICE_WORKER or
+  /// COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS_SHARED_WORKER on
+  /// one CoreWebView2 to avoid handling the same WebResourceRequested
+  /// event multiple times.
+  ///
+  /// | URI Filter String | Request URI | Match | Notes |
+  /// | ---- | ---- | ---- | ---- |
+  /// | `*` | `https://contoso.com/a/b/c` | Yes | A single * will match all URIs
+  /// | | `*://contoso.com/*` | `https://contoso.com/a/b/c` | Yes | Matches
+  /// everything in contoso.com across all schemes | | `*://contoso.com/*` |
+  /// `https://example.com/?https://contoso.com/` | Yes | But also matches a URI
+  /// with just the same text anywhere in the URI | | `example` |
+  /// `https://contoso.com/example` | No | The filter does not perform partial
+  /// matches | | `*example` | `https://contoso.com/example` | Yes | The filter
+  /// matches across URI parts  | | `*example` |
+  /// `https://contoso.com/path/?example` | Yes | The filter matches across URI
+  /// parts | | `*example` | `https://contoso.com/path/?query#example` | No |
+  /// The filter is matched against the URI with no fragment | | `*example` |
+  /// `https://example` | No | The URI is normalized before filter matching so
+  /// the actual URI used for comparison is `https://example/` | |
+  /// `*example/` | `https://example` | Yes | Just like above, but this time the
+  /// filter ends with a / just like the normalized URI | |
+  /// `https://xn--qei.example/` | `https://&#x2764;.example/` | Yes | Non-ASCII
+  /// hostnames are normalized to punycode before wildcard comparison | |
+  /// `https://&#x2764;.example/` | `https://xn--qei.example/` | No | Non-ASCII
+  /// hostnames are normalized to punycode before wildcard comparison |
+  ///
+  /// \snippet ScenarioSharedWorkerWRR.cpp WebResourceRequested2
+  HRESULT AddWebResourceRequestedFilterWithRequestSourceKinds(
+    [in] LPCWSTR const uri,
+    [in] COREWEBVIEW2_WEB_RESOURCE_CONTEXT const resourceContext,
+    [in] COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS const requestSourceKinds);
+
+  /// Removes a matching WebResource filter that was previously added for the
+  /// `WebResourceRequested` event.  If the same filter was added multiple
+  /// times, then it must be removed as many times as it was added for the
+  /// removal to be effective. Returns `E_INVALIDARG` for a filter that was
+  /// not added or is already removed.
+  /// If the filter was added for multiple requestSourceKinds and removed just for one of them
+  /// the filter remains for the non-removed requestSourceKinds.
+  HRESULT RemoveWebResourceRequestedFilterWithRequestSourceKinds(
+      [in] LPCWSTR const uri,
+      [in] COREWEBVIEW2_WEB_RESOURCE_CONTEXT const resourceContext,
+      [in] COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS const requestSourceKinds);
+ }
+
+/// Event args for the `WebResourceRequested` event.
+[uuid(8f3ec528-0596-4d51-9f9e-2da580ac9787), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalWebResourceRequestedEventArgs : IUnknown {
+  /// The web resource requested source.
+  [propget] HRESULT RequestedSourceKind(
+  [out, retval] COREWEBVIEW2_WEB_RESOURCE_REQUEST_SOURCE_KINDS* requestedSourceKind);
+}
+
+/// This is the ICoreWebView2ExperimentalEnvironmentOptions interface
+[uuid(ac52d13f-0d38-475a-9dca-876580d6793e), object, pointer_default(unique)]
+interface ICoreWebView2ExperimentalEnvironmentOptions : IUnknown {
+  /// Array of custom scheme registrations. The returned
+  /// ICoreWebView2CustomSchemeRegistration pointers must be released, and the
+  /// array itself must be deallocated with CoTaskMemFree.
+  HRESULT GetCustomSchemeRegistrations(
+      [out] UINT32* count,
+      [out] ICoreWebView2ExperimentalCustomSchemeRegistration*** schemeRegistrations);
+  /// Set the array of custom scheme registrations to be used.
+  /// \snippet AppWindow.cpp CoreWebView2CustomSchemeRegistration
+  HRESULT SetCustomSchemeRegistrations(
+      [in] UINT32 count,
+      [in] ICoreWebView2ExperimentalCustomSchemeRegistration** schemeRegistrations);
+}
+}

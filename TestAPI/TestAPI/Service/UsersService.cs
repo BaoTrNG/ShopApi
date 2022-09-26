@@ -8,6 +8,7 @@ namespace TestAPI.Data
     {
 
         private readonly IMongoCollection<Items> _items;
+
         public UsersService(IOptions<ShopDbSetting> options)
         {
             var mongoClient = new MongoClient(options.Value.ConnectionString);

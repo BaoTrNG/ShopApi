@@ -4,6 +4,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ShopDbSetting>(builder.Configuration.GetSection("ShopDbSetting"));
 builder.Services.AddSingleton<ServiceLogin>();
 builder.Services.AddSingleton<UsersService>();
+builder.Services.AddSingleton<TempService>();
 
 var app = builder.Build();
 string art = "haha⠀ ";
@@ -77,6 +78,7 @@ app.MapPost("/api/createUser", async (ServiceLogin service, Users user) =>
 
 //Find all items
 app.MapGet("/api/getitems", async (UsersService service) => await service.GetAllItems());
+
 
 
 //find cart by id
