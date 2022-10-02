@@ -112,6 +112,7 @@
             this.Cartbtn.ImageOptions.ImageIndex = 1;
             this.Cartbtn.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("Cartbtn.ImageOptions.LargeImage")));
             this.Cartbtn.Name = "Cartbtn";
+            this.Cartbtn.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.Cartbtn_ItemClick);
             // 
             // ribbonPage1
             // 
@@ -128,6 +129,9 @@
             // 
             // Main
             // 
+
+            this.IsMdiContainer = true;
+
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1274, 982);
@@ -140,6 +144,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Main";
             this.Load += new System.EventHandler(this.Main_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Closing);
             ((System.ComponentModel.ISupportInitialize)(this.itemsBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).EndInit();

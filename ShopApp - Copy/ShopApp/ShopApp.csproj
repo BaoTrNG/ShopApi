@@ -122,6 +122,9 @@
     <Reference Include="MongoDB.Libmongocrypt, Version=1.5.5.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Libmongocrypt.1.5.5\lib\net472\MongoDB.Libmongocrypt.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.2-beta2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpCompress, Version=0.30.1.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpCompress.0.30.1\lib\net461\SharpCompress.dll</HintPath>
     </Reference>
@@ -229,11 +232,11 @@
     <Compile Include="Frm\Main.Designer.cs">
       <DependentUpon>Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Frm\UserFrm\Cart.cs">
+    <Compile Include="Frm\UserFrm\Cartfrm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Frm\UserFrm\Cart.Designer.cs">
-      <DependentUpon>Cart.cs</DependentUpon>
+    <Compile Include="Frm\UserFrm\Cartfrm.Designer.cs">
+      <DependentUpon>Cartfrm.cs</DependentUpon>
     </Compile>
     <Compile Include="Frm\UserFrm\Shop.cs">
       <SubType>Form</SubType>
@@ -247,8 +250,10 @@
     <Compile Include="Frm\UserFrm\Shop2.Designer.cs">
       <DependentUpon>Shop2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model Class\CartItem.cs" />
+    <Compile Include="Model Class\CartModel.cs" />
     <Compile Include="Model Class\Items.cs" />
-    <Compile Include="Model Class\Itemss.cs" />
+    <Compile Include="Model Class\TempCart.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Frm\Login.resx">
@@ -257,8 +262,8 @@
     <EmbeddedResource Include="Frm\Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Frm\UserFrm\Cart.resx">
-      <DependentUpon>Cart.cs</DependentUpon>
+    <EmbeddedResource Include="Frm\UserFrm\Cartfrm.resx">
+      <DependentUpon>Cartfrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm\UserFrm\Shop.resx">
       <DependentUpon>Shop.cs</DependentUpon>
@@ -288,8 +293,10 @@
     <None Include="Properties\DataSources\ShopApp.Frm.Main.datasource" />
     <None Include="Properties\DataSources\ShopApp.Frm.UserFrm.Cart.datasource" />
     <None Include="Properties\DataSources\ShopApp.Frm.UserFrm.Shop.datasource" />
+    <None Include="Properties\DataSources\ShopApp.Model_Class.CartItem.datasource" />
     <None Include="Properties\DataSources\ShopApp.Model_Class.Items.datasource" />
     <None Include="Properties\DataSources\ShopApp.Model_Class.Itemss.datasource" />
+    <None Include="Properties\DataSources\ShopApp.Model_Class.TempCart.datasource" />
     <None Include="Properties\DataSources\ShopApp.Properties.Resources.datasource" />
     <None Include="Properties\DataSources\ShopApp.Properties.Settings.datasource" />
     <None Include="Properties\Settings.settings">

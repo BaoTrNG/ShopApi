@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ShopApp.Frm;
 using ShopApp.Frm.UserFrm;
+using ShopApp.Model_Class;
 namespace ShopApp
 {
     internal static class Program
@@ -12,18 +13,22 @@ namespace ShopApp
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-
-        public static string Username { get; set; }
+        public static string Username;
+        public static TempCart tempCart;
+        public static bool isload;
+        //  public static List<CartItem> cartItems = new List<CartItem>();
         [STAThread]
 
         static void Main()
         {
+            isload = false;
+            // tempCart.items = new List<CartItem>();
             /*  Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
       AppDomain.CurrentDomain.FriendlyName, 11000); */
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //  Application.Run(new Login());
-            Application.Run(new Main());
+            Application.Run(new Login());
+            // Application.Run(new Main());
             //  Application.Run(new Shop());
         }
     }

@@ -16,7 +16,11 @@ namespace TestAPI.Data
                 .GetCollection<Items>("Items");
         }
         public async Task<List<Items>> GetAllItems() =>
-          await _items.Find(_ => true).ToListAsync();
+          await _items.Find(m => m.Remain > 0).ToListAsync();
+        public async Task<Items> CheckRemain(string id, int remain) =>
+         await _items.Find(m => m.Id == id).FirstOrDefaultAsync();
+
+
 
 
     }

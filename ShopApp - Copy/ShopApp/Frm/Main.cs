@@ -23,8 +23,23 @@ namespace ShopApp.Frm
         public Main()
         {
             InitializeComponent();
-            IsMdiContainer = true;
+
+
         }
+
+        private void Main_Closing(object sender, EventArgs e)
+        {
+            Form frm = this.CheckExists(typeof(Login));
+            if (frm != null) frm.Activate();
+            else
+            {
+                Login f = new Login();
+
+                f.Show();
+
+            }
+        }
+
 
         //  Shop Shopfrm = new Shop();
         //Cart Cartfrm = new Cart();
@@ -35,12 +50,12 @@ namespace ShopApp.Frm
                     return f;
             return null;
         }
+
+
+
         private void Main_Load(object sender, EventArgs e)
         {
-            //  this.MdiParent = true;
-            /*     Shop f = new Shop();
-                 f.MdiParent = this;
-                 f.Show(); */
+
             Shop f = new Shop();
             f.MdiParent = this;
             f.Show();
@@ -50,13 +65,41 @@ namespace ShopApp.Frm
         private void Shopbtn_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
             Form frm = this.CheckExists(typeof(Shop));
-            if (frm != null) frm.Activate();
+            if (frm != null)
+            {
+                frm.Activate();
+                frm.Refresh();
+            }
+
             else
             {
                 Shop f = new Shop();
                 f.MdiParent = this;
                 f.Show();
+
             }
+            /*   Shop f = new Shop();
+               f.MdiParent = this;
+               f.Show();*/
+        }
+
+        private void Cartbtn_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            /*   Form frm = this.CheckExists(typeof(Cartfrm));
+               if (frm != null)
+               {
+                   frm.Activate();
+                   frm.Refresh();
+               }
+               else
+               {
+                   Cartfrm f = new Cartfrm();
+                   f.MdiParent = this;
+                   f.Show();
+               } */
+            Cartfrm f = new Cartfrm();
+            f.MdiParent = this;
+            f.Show();
         }
     }
 }

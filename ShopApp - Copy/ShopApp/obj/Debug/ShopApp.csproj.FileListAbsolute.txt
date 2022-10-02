@@ -120,7 +120,6 @@ D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.csproj.AssemblyReference.cac
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.csproj.SuggestedBindingRedirects.cache
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.Login.resources
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.Main.resources
-D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.UserFrm.Cart.resources
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.UserFrm.Shop.resources
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Properties.Resources.resources
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.csproj.GenerateResource.cache
@@ -307,3 +306,6 @@ D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\Dapplo.Windows.Com.xml
 D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\Dapplo.Windows.Common.xml
 D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\Dapplo.Windows.EmbeddedBrowser.xml
 D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.UserFrm.Shop2.resources
+D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.UserFrm.Cartfrm.resources
+D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\Newtonsoft.Json.dll
+D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\Newtonsoft.Json.xml

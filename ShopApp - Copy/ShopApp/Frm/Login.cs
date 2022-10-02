@@ -199,13 +199,33 @@ namespace ShopApp.Frm
 
                         streamWriter.Write(json);
                     }
+
+                    /*     httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createcart");
+
+                         httpWebRequest.ContentType = "application/json";
+                         httpWebRequest.Method = "POST";
+                         using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                         {
+
+                             string json = "{\"buyer\":\"" + Program.Username + "\",\"items\":[],\"total\":0}";
+                             Console.WriteLine("this is json" + json);
+                             streamWriter.Write(json);
+                         } */
+
+
+
                     var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
                     using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                     {
                         var result = streamReader.ReadToEnd();
                         if (result == "11")
                         {
+                            Program.Username = textBox1.Text;
                             NotiLabel.Text = "Login Succeed";
+                            Form f = new Main();
+                            f.Show();
+                            this.ShowInTaskbar = false;
+                            this.Visible = false;
                         }
 
                         else
@@ -268,6 +288,8 @@ namespace ShopApp.Frm
             textBox3.Visible = false;
             label4.Text = "";
 
+            textBox1.Text = "test";
+            textBox2.Text = "123";
 
         }
 
@@ -344,6 +366,17 @@ namespace ShopApp.Frm
 
         private void Exitbtn_Click(object sender, EventArgs e)
         {
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createcart");
+
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+
+                string json = "{\"buyer\":\"" + Program.Username + "\",\"items\":[],\"total\":0}";
+                Console.WriteLine("this is json" + json);
+                streamWriter.Write(json);
+            }
             this.Close();
         }
     }

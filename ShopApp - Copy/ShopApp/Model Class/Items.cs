@@ -13,5 +13,7 @@ namespace ShopApp.Model_Class
         public double price { get; set; }
         public int remain { get; set; }
         public string image { get; set; }
+
+        public string url { get; set; }
     }
 }

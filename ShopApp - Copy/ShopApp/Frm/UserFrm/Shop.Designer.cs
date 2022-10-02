@@ -76,7 +76,7 @@
             // e4
             // 
             this.e4.EditValue = new decimal(new int[] {
-            1,
+            0,
             0,
             0,
             0});
@@ -138,10 +138,10 @@
             // 
             this.Buybtn.Location = new System.Drawing.Point(110, 241);
             this.Buybtn.Name = "Buybtn";
-            this.Buybtn.Size = new System.Drawing.Size(125, 29);
+            this.Buybtn.Size = new System.Drawing.Size(137, 29);
             this.Buybtn.TabIndex = 6;
-            this.Buybtn.Text = "Mua";
-            this.Buybtn.Click += new System.EventHandler(this.simpleButton1_Click);
+            this.Buybtn.Text = "Thêm Vào Giỏ Hàng";
+            this.Buybtn.Click += new System.EventHandler(this.Buybtn_Click);
             // 
             // label3
             // 
@@ -169,7 +169,6 @@
             this.label1.Size = new System.Drawing.Size(96, 16);
             this.label1.TabIndex = 2;
             this.label1.Text = "Tên Sản Phảm:";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // e2
             // 
@@ -186,7 +185,6 @@
             this.e1.Properties.ReadOnly = true;
             this.e1.Size = new System.Drawing.Size(125, 22);
             this.e1.TabIndex = 0;
-            this.e1.EditValueChanged += new System.EventHandler(this.e1_EditValueChanged);
             // 
             // webView21
             // 
@@ -195,7 +193,7 @@
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webView21.Location = new System.Drawing.Point(450, 341);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(823, 335);
+            this.webView21.Size = new System.Drawing.Size(823, 352);
             this.webView21.TabIndex = 3;
             this.webView21.ZoomFactor = 1D;
             // 

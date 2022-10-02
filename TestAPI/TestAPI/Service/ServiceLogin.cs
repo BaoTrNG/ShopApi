@@ -25,6 +25,10 @@ namespace TestAPI.Data
         //auth user by url parameter
         public async Task<Users> GetUserJson(Users user) =>
           await _users.Find(m => m.Id == user.Id && m.Pass == user.Pass).FirstOrDefaultAsync();
+        public async Task<Users> GetUserJson2(Users user) =>
+  await _users.Find(m => m.Id == user.Id && m.Pass == user.Pass).FirstOrDefaultAsync();
+
+
         ///      
 
         ///create user  
@@ -38,6 +42,10 @@ namespace TestAPI.Data
         public async Task<Users> CheckEmailJson(Users user) =>
           await _users.Find(m => m.Email == user.Email).FirstOrDefaultAsync();
         ///
+
+
+
+
 
 
         //   public async Task<Users> FindUser(string id) => await _users.

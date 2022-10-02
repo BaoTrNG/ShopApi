@@ -28,7 +28,10 @@ namespace ShopApp.Frm.UserFrm
         public Shop()
         {
             InitializeComponent();
+
         }
+        CartModel cart = new CartModel();
+        private int checkcart = 0;
         private string ID;
         private int amount;
         private double money;
@@ -37,15 +40,16 @@ namespace ShopApp.Frm.UserFrm
             public string id { get; set; }
             public string brand { get; set; }
             public double price { get; set; }
-            public int remain { get; set; }
+            //   public int remain { get; set; }
             public Image Image { get; set; }
+            public string linkvid { get; set; }
             public event PropertyChangedEventHandler PropertyChanged;
-            public PictureObject(string id, string brand, double price, int remain, string url)
+            public PictureObject(string id, string brand, double price, string url, string linkvid)
             {
                 this.id = id;
                 this.brand = brand;
                 this.price = price;
-                this.remain = remain;
+                this.linkvid = linkvid;
                 //    Image = ResourceImageHelper.CreateImageFromResources("DevExpress.XtraEditors.Images.loading.gif", typeof(BackgroundImageLoader).Assembly);
                 BackgroundImageLoader bg = new BackgroundImageLoader();
                 bg.Load(url);
@@ -59,27 +63,21 @@ namespace ShopApp.Frm.UserFrm
             }
         }
 
-        private void gridControl1_CellClick(object sender, DataGridViewCellEventArgs e)
+        /*  private void gridControl1_CellClick(object sender, DataGridViewCellEventArgs e)
+          {
+              Console.WriteLine("2");
+              string ID = gridView1.GetFocusedRowCellValue("id").ToString();
+              e1.Text = ID;
+
+          }*/
+
+        private void LoadPage()
         {
-            Console.WriteLine("2");
-            string ID = gridView1.GetFocusedRowCellValue("id").ToString();
-            e1.Text = ID;
-
-        }
-
-
-
-        private void Shop_Load(object sender, EventArgs e)
-        {
-            /*      string sHTML = "<!DOCTYPE html>" +
-        "<head>" +
-        "</head>" +
-        "<body>" +
-         "<iframe width = \"650\" height = \"250\" src = \"https://www.youtube.com/embed/a9zGjl1YLh8\" ></iframe>" +
-        "</body>" +
-        "</html>";
-                  await webView21.EnsureCoreWebView2Async();
-                  webView21.NavigateToString(sHTML); */
+            //Console.WriteLine("update2");
+            cart.buyer = Program.Username;
+            cart.date = DateTime.Now.ToString("dd/MM/yyyy");
+            cart.status = "pending";
+            cart.items = new List<CartItem>();
             gridView1.RowHeight = 50;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
             httpWebRequest.ContentType = "application/json";
@@ -91,33 +89,72 @@ namespace ShopApp.Frm.UserFrm
                 string result = streamReader.ReadToEnd();
 
                 var ItemsList = JsonSerializer.Deserialize<List<Items>>(result);
-                /*  BindingSource binding = new BindingSource();
-                  binding.DataSource = ItemsList;
-                  gridControl1.DataSource = binding; */
+
                 BindingList<PictureObject> list = new BindingList<PictureObject>();
                 foreach (var item in ItemsList)
                 {
-                    list.Add(new PictureObject(item.id, item.brand, item.price, item.remain, item.image));
+                    list.Add(new PictureObject(item.id, item.brand, item.price, item.image, item.url));
 
                 }
 
                 gridControl1.DataSource = list;
                 gridView1.OptionsBehavior.Editable = false;
-                e4.Value = 1;
-
+                gridView1.Columns["linkvid"].Visible = false;
             }
 
+        }
+
+        private void LoadCart()
+        {
+            string Buyer = "{\"buyer\":\"" + Program.Username + "\"}";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findcart");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                string json = Buyer;
+                streamWriter.Write(json);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                string result = streamReader.ReadToEnd();
+
+                var Cart = JsonSerializer.Deserialize<TempCart>(result);
+                if (Cart.buyer != "0")
+                {
+                    Console.WriteLine("have cart");
+                    checkcart = 1;
+                    Program.tempCart = Cart;
+                }
+                else
+                {
+                    Console.WriteLine("no cart");
+                    Program.tempCart = new TempCart();
+                    Program.tempCart.buyer = Program.Username;
+                    Program.tempCart.items = new List<CartItem>();
+                    Program.isload = true;
+                }
+            }
+        }
+
+
+        private void Shop_Load(object sender, EventArgs e)
+        {
+            //Console.WriteLine("update1");
+            LoadCart();
+            LoadPage();
 
         }
 
 
-
         private async void gridControl1_Click(object sender, EventArgs e)
         {
-
+            e4.Value = 0;
+            Buybtn.Visible = true;
             ID = gridView1.GetFocusedRowCellValue("id").ToString();
             string Brand = gridView1.GetFocusedRowCellValue("brand").ToString();
-
+            string url = gridView1.GetFocusedRowCellValue("linkvid").ToString();
             money = Convert.ToDouble(gridView1.GetFocusedRowCellValue("price").ToString());
             //   string Price = money.ToString(@"#\.###\.###\.##0");
             string Price = string.Format("{0:#,##0.00}", money);
@@ -129,11 +166,10 @@ namespace ShopApp.Frm.UserFrm
             e2.Text = Brand;
             e3.Text = Price;
             e5.Text = Price;
-            string sHTML = "<!DOCTYPE html>" +
-"<head>" +
-"</head>" +
+
+            string sHTML = "<!DOCTYPE html>" + "<head>" + "</head>" +
 "<body>" +
-"<iframe width = \"650\" height = \"250\" src = \"https://www.youtube.com/embed/a9zGjl1YLh8\" ></iframe>" +
+"<iframe width = \"670\" height = \"248\" src =  " + url + "></iframe> " +
 "</body>" +
 "</html>";
             await webView21.EnsureCoreWebView2Async();
@@ -141,35 +177,148 @@ namespace ShopApp.Frm.UserFrm
 
         }
 
-
-
-        private void e4_EditValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-
-        private void e1_EditValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void e4_EditValueChanged_1(object sender, EventArgs e)
         {
             amount = Convert.ToInt32(e4.Value);
-            e5.Text = (amount * money).ToString(@"#\.###\.###\.##0");
+            string temp = string.Format("{0:#,##0.00}", money * amount) + " vnđ";
+            e5.Text = temp;//(amount * money).ToString(@"#\.###\.###\.##0");
         }
 
-        private void simpleButton1_Click(object sender, EventArgs e)
+
+        private void AddItem(CartItem tempItem)
         {
-            Console.WriteLine(ID);
-            Console.WriteLine(amount);
-            Console.WriteLine(money);
+            //check duplicate
+
+            foreach (var item in Program.tempCart.items)
+            {
+                if (item.id == tempItem.id)
+                {
+                    Console.WriteLine("duplicate");
+                    item.amount += tempItem.amount;
+                    item.price += tempItem.amount * tempItem.price;
+                    return;
+                }
+            }
+            //Program.tempCart.buyer = Program.Username;
+            Console.WriteLine("no dup");
+            tempItem.price = tempItem.amount * tempItem.price;
+            Program.tempCart.items.Add(tempItem);
         }
+        private void UpdateTotal()
+        {
+            Program.tempCart.total = 0; //prevent stack value
+            foreach (var item in Program.tempCart.items)
+            {
+                // Console.WriteLine(item.price + "  " + item.amount);
+                Program.tempCart.total += item.price;
+            }
+        }
+
+        private bool CheckRemain(string id, int remain)
+        {
+            // Console.WriteLine("test");
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkremain" + "/" + id + "/" + remain);
+
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "GET";
+
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                string result = streamReader.ReadToEnd();
+                Console.WriteLine("this is check" + result);
+                if (result == "0")
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+
+        }
+        private void UpdateTempCart()
+        {
+            string json = JsonSerializer.Serialize(Program.tempCart);
+            //  Console.WriteLine(json);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "PUT";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                Console.WriteLine(result);
+            }
+        }
+
+        private void CreateTempCart()
+        {
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createcart");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                //  string json = JsonSerializer.Serialize(Program.tempCart);
+                string json = "{\"buyer\":\"" + Program.Username + "\",\"items\":[],\"total\":0}";
+                Console.WriteLine("this is json" + json);
+                streamWriter.Write(json);
+            }
+
+        }
+
+        private void Buybtn_Click(object sender, EventArgs e)
+        {
+            /*   if (e4.Value == 0)
+               {
+
+                   MessageBox.Show("Số Lượng Phải Lớn Hơn 0");
+               }
+               else
+               {
+                   if (CheckRemain(ID, amount))
+                   {
+
+                       e4.Value = 0; //reset spinedit
+                                     //   money = amount * money;
+                       CartItem temp = new CartItem(ID, amount, money);
+
+                       AddItem(temp);
+                       UpdateTotal();
+                       CreateTempCart();
+                       if (checkcart == 0) CreateTempCart();
+                       else UpdateTempCart();
+                       // temp = null; //free memory
+
+                       foreach (var item in Program.tempCart.items)
+                       {
+                           Console.WriteLine(item.id);
+                           Console.WriteLine(item.amount);
+                           Console.WriteLine(item.price);
+
+                           Console.WriteLine();
+                       }
+                   }
+                   else
+                   {
+                       MessageBox.Show("Sản Phẩm Đã Hết Hàng");
+                       LoadPage();
+                   }
+          
+
+        }*/
+            CartItem temp = new CartItem(ID, amount, money);
+            AddItem(temp);
+            UpdateTotal();
+
+            // CreateTempCart();
+        }
+
     }
 }
