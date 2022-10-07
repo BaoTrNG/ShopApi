@@ -12,6 +12,8 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using ShopApp.Model_Class;
+using System.Text.Json;
 
 namespace ShopApp.Frm
 {
@@ -41,7 +43,7 @@ namespace ShopApp.Frm
             if (IsLogin == false)
             {
                 string CheckId = "{\"id\":\"" + Program.Username + "\"}";
-                Console.WriteLine(CheckId);
+                // Console.WriteLine(CheckId);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/create/checkid");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
@@ -55,7 +57,7 @@ namespace ShopApp.Frm
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    Console.WriteLine(result);
+                    //  Console.WriteLine(result);
                     if (result == "1")
                     {
                         NotiLabel.Text = "User đã tồn tại";
@@ -66,7 +68,7 @@ namespace ShopApp.Frm
                         NotiLabel.Text = "";
                         IsIdValid = true;
                     }
-                    Console.WriteLine("this is before " + IsIdValid);
+                    // Console.WriteLine("this is before " + IsIdValid);
                 }
             }
         }
@@ -121,7 +123,7 @@ namespace ShopApp.Frm
             if (IsLogin == false)
             {
                 string CheckEmail = "{\"email\":\"" + Email + "\"}";
-                Console.WriteLine(CheckEmail);
+                // Console.WriteLine(CheckEmail);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/create/checkemail");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
@@ -135,7 +137,7 @@ namespace ShopApp.Frm
                 using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
                     var result = streamReader.ReadToEnd();
-                    Console.WriteLine(result);
+                    // Console.WriteLine(result);
                     if (result == "1")
                     {
                         NotiLabel2.Text = "Email đã tồn tại";
@@ -146,7 +148,7 @@ namespace ShopApp.Frm
                         NotiLabel2.Text = "";
                         IsEmailValid = true;
                     }
-                    Console.WriteLine("this is before " + IsEmailValid);
+                    // Console.WriteLine("this is before " + IsEmailValid);
                 }
             }
         }
@@ -178,6 +180,27 @@ namespace ShopApp.Frm
                 else NotiLabel.Text = "";
             }
         }
+
+        private void CreateTempCart(string user)
+        {
+
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createcart");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                //string json = JsonSerializer.Serialize(Program.tempCart);
+                string json = "{\"id\":\"" + user + "\"}";
+                //    Console.WriteLine("this is the " + json);
+                streamWriter.Write(json);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                // Console.WriteLine(result);
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
 
@@ -200,17 +223,7 @@ namespace ShopApp.Frm
                         streamWriter.Write(json);
                     }
 
-                    /*     httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createcart");
 
-                         httpWebRequest.ContentType = "application/json";
-                         httpWebRequest.Method = "POST";
-                         using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-                         {
-
-                             string json = "{\"buyer\":\"" + Program.Username + "\",\"items\":[],\"total\":0}";
-                             Console.WriteLine("this is json" + json);
-                             streamWriter.Write(json);
-                         } */
 
 
 
@@ -242,8 +255,8 @@ namespace ShopApp.Frm
                     NotiLabel.Text = "Vui Lòng Điền Hết Thông Tin ";
                 else
                 {
-                    Console.WriteLine("this is emaill " + IsEmailValid);
-                    Console.WriteLine("this is id " + IsIdValid);
+                    //    Console.WriteLine("this is emaill " + IsEmailValid);
+                    //    Console.WriteLine("this is id " + IsIdValid);
                     string Type = "USER";
                     string register = "{\"id\":\"" + Program.Username + "\",\"Pass\":\"" + Password + "\",\"Type\":\"" + Type + "\",\"Email\":\"" + Email + "\"}";
                     var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createUser");
@@ -256,10 +269,12 @@ namespace ShopApp.Frm
                         streamWriter.Write(json);
                     }
                     var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                    Console.WriteLine(httpResponse.StatusCode);
+                    // Console.WriteLine(httpResponse.StatusCode);
                     if ((int)httpResponse.StatusCode == 200)
                     {
                         NotiLabel.Text = "Register Succeed";
+                        CreateTempCart(textBox1.Text);
+
                     }
                     else
                     {
@@ -276,6 +291,10 @@ namespace ShopApp.Frm
 
         private void Login_Load(object sender, EventArgs e)
         {
+            Program.tempCart = new TempCart();
+            Program.tempCart.items = new List<CartItem>();
+
+            // Console.WriteLine("reloaddddddddddddddd");
             textBox2.UseSystemPasswordChar = true;
             CrmPass.UseSystemPasswordChar = true;
             NotiLabel.Text = "";
@@ -334,11 +353,11 @@ namespace ShopApp.Frm
                 SendBtn.Text = "Register";
                 SwitchBtn.Text = "Login";
                 NotiLabel.Text = "";
-
+                NotiLabel2.Text = "";
 
                 label4.Text = "Email";
             }
-            Console.WriteLine(IsLogin);
+            //   Console.WriteLine(IsLogin);
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -366,17 +385,7 @@ namespace ShopApp.Frm
 
         private void Exitbtn_Click(object sender, EventArgs e)
         {
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createcart");
 
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
-            {
-
-                string json = "{\"buyer\":\"" + Program.Username + "\",\"items\":[],\"total\":0}";
-                Console.WriteLine("this is json" + json);
-                streamWriter.Write(json);
-            }
             this.Close();
         }
     }

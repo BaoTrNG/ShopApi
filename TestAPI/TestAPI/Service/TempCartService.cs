@@ -14,18 +14,18 @@ namespace TestAPI.Data
         {
             var mongoClient = new MongoClient(options.Value.ConnectionString);
             _temp = mongoClient.GetDatabase(options.Value.DatabaseName)
-                .GetCollection<Carts>("Carts");
+                .GetCollection<Carts>("TempCarts");
         }
         public async Task<List<Carts>> FindAll() =>
           await _temp.Find(_ => true).ToListAsync();
         public async Task<Carts> FindCart(Carts temp) =>
-          await _temp.Find(m => m.buyer == temp.buyer).FirstOrDefaultAsync();
+          await _temp.Find(m => m.Id == temp.Id).FirstOrDefaultAsync();
 
 
         public async Task Create(Carts temp) =>
           await _temp.InsertOneAsync(temp);
         public async Task Update(string buyer, Carts temp) =>
-        await _temp.ReplaceOneAsync(m => m.buyer == buyer, temp);
+        await _temp.ReplaceOneAsync(m => m.Id == buyer, temp);
 
     }
 }

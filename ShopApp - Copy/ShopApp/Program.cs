@@ -15,14 +15,15 @@ namespace ShopApp
         /// </summary>
         public static string Username;
         public static TempCart tempCart;
+        public static TempCart testCart;
         public static bool isload;
-        //  public static List<CartItem> cartItems = new List<CartItem>();
+        // public static List<CartItem> cartItems;
         [STAThread]
 
         static void Main()
         {
             isload = false;
-            // tempCart.items = new List<CartItem>();
+
             /*  Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
       AppDomain.CurrentDomain.FriendlyName, 11000); */
             Application.EnableVisualStyles();

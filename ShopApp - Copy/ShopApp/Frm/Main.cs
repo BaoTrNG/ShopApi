@@ -29,15 +29,16 @@ namespace ShopApp.Frm
 
         private void Main_Closing(object sender, EventArgs e)
         {
-            Form frm = this.CheckExists(typeof(Login));
-            if (frm != null) frm.Activate();
-            else
-            {
-                Login f = new Login();
+            /*   Form frm = this.CheckExists(typeof(Login));
+               if (frm != null) frm.Activate();
+               else
+               {
+                   Login f = new Login();
+                   f.Show();
+               } */
+            Login f = new Login();
 
-                f.Show();
-
-            }
+            f.Show();
         }
 
 
@@ -68,7 +69,7 @@ namespace ShopApp.Frm
             if (frm != null)
             {
                 frm.Activate();
-                frm.Refresh();
+
             }
 
             else

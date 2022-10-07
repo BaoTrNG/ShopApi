@@ -77,7 +77,7 @@ namespace ShopApp.Frm.UserFrm
             cart.buyer = Program.Username;
             cart.date = DateTime.Now.ToString("dd/MM/yyyy");
             cart.status = "pending";
-            cart.items = new List<CartItem>();
+
             gridView1.RowHeight = 50;
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
             httpWebRequest.ContentType = "application/json";
@@ -106,13 +106,14 @@ namespace ShopApp.Frm.UserFrm
 
         private void LoadCart()
         {
-            string Buyer = "{\"buyer\":\"" + Program.Username + "\"}";
+            string Buyer = "{\"id\":\"" + Program.Username + "\"}";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findcart");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 string json = Buyer;
+                Console.WriteLine(json);
                 streamWriter.Write(json);
             }
             var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -121,19 +122,22 @@ namespace ShopApp.Frm.UserFrm
                 string result = streamReader.ReadToEnd();
 
                 var Cart = JsonSerializer.Deserialize<TempCart>(result);
-                if (Cart.buyer != "0")
+                if (Cart.items != null)
                 {
                     Console.WriteLine("have cart");
-                    checkcart = 1;
                     Program.tempCart = Cart;
+
                 }
                 else
                 {
                     Console.WriteLine("no cart");
-                    Program.tempCart = new TempCart();
-                    Program.tempCart.buyer = Program.Username;
-                    Program.tempCart.items = new List<CartItem>();
                     Program.isload = true;
+                    Program.tempCart = new TempCart();
+                    Program.tempCart.id = Program.Username;
+                    Program.tempCart.items = new List<CartItem>();
+
+                    Program.testCart = Program.tempCart;
+                    //  CreateTempCart();
                 }
             }
         }
@@ -193,16 +197,21 @@ namespace ShopApp.Frm.UserFrm
             {
                 if (item.id == tempItem.id)
                 {
-                    Console.WriteLine("duplicate");
+                    //       Console.WriteLine("duplicate");
                     item.amount += tempItem.amount;
                     item.price += tempItem.amount * tempItem.price;
                     return;
                 }
+
             }
+
+
+
             //Program.tempCart.buyer = Program.Username;
-            Console.WriteLine("no dup");
+            //  Console.WriteLine("no dup");
             tempItem.price = tempItem.amount * tempItem.price;
             Program.tempCart.items.Add(tempItem);
+
         }
         private void UpdateTotal()
         {
@@ -238,22 +247,45 @@ namespace ShopApp.Frm.UserFrm
             }
 
         }
-        private void UpdateTempCart()
+        /*  private void UpdateTempCart()
+          {
+              string json = JsonSerializer.Serialize(Program.tempCart);
+              var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+              httpWebRequest.ContentType = "application/json";
+              httpWebRequest.Method = "PUT";
+              using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+              {
+                  streamWriter.Write(json);
+                  // Console.WriteLine(json);
+              }
+              var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+              Console.WriteLine("this is status " + (int)httpResponse.StatusCode);
+          }*/
+
+        private async void UpdateTempCart()
         {
+
             string json = JsonSerializer.Serialize(Program.tempCart);
-            //  Console.WriteLine(json);
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "PUT";
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
                 streamWriter.Write(json);
+                Console.WriteLine(json);
             }
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
+            int b = (int)httpResponse.StatusCode;
+            if (b == 200)
             {
-                var result = streamReader.ReadToEnd();
-                Console.WriteLine(result);
+                //   Program.testCart = Program.tempCart;
+                //   Program.testCart.id = "te";
+                //  CreateTempCart();
+                MessageBox.Show("Thành Công");
+            }
+            else
+            {
+                MessageBox.Show("fail");
             }
         }
 
@@ -265,59 +297,57 @@ namespace ShopApp.Frm.UserFrm
             httpWebRequest.Method = "POST";
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
             {
-                //  string json = JsonSerializer.Serialize(Program.tempCart);
-                string json = "{\"buyer\":\"" + Program.Username + "\",\"items\":[],\"total\":0}";
-                Console.WriteLine("this is json" + json);
+                string json = JsonSerializer.Serialize(Program.tempCart);
+                Console.WriteLine("this is the " + json);
                 streamWriter.Write(json);
             }
-
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                var result = streamReader.ReadToEnd();
+                Console.WriteLine(result);
+            }
         }
 
         private void Buybtn_Click(object sender, EventArgs e)
         {
-            /*   if (e4.Value == 0)
-               {
+            if (e4.Value == 0)
+            {
 
-                   MessageBox.Show("Số Lượng Phải Lớn Hơn 0");
-               }
-               else
-               {
-                   if (CheckRemain(ID, amount))
-                   {
+                MessageBox.Show("Số Lượng Phải Lớn Hơn 0");
+            }
+            else
+            {
+                if (CheckRemain(ID, amount))
+                {
 
-                       e4.Value = 0; //reset spinedit
-                                     //   money = amount * money;
-                       CartItem temp = new CartItem(ID, amount, money);
+                    e4.Value = 0; //reset spinedit
+                                  //   money = amount * money;
+                    CartItem temp = new CartItem(ID, amount, money);
 
-                       AddItem(temp);
-                       UpdateTotal();
-                       CreateTempCart();
-                       if (checkcart == 0) CreateTempCart();
-                       else UpdateTempCart();
-                       // temp = null; //free memory
+                    AddItem(temp);
+                    UpdateTotal();
+                    UpdateTempCart();
+                    temp = null; //free memory
 
-                       foreach (var item in Program.tempCart.items)
-                       {
-                           Console.WriteLine(item.id);
-                           Console.WriteLine(item.amount);
-                           Console.WriteLine(item.price);
+                    /* foreach (var item in Program.tempCart.items)
+                     {
+                         Console.WriteLine(item.id);
+                         Console.WriteLine(item.amount);
+                         Console.WriteLine(item.price);
 
-                           Console.WriteLine();
-                       }
-                   }
-                   else
-                   {
-                       MessageBox.Show("Sản Phẩm Đã Hết Hàng");
-                       LoadPage();
-                   }
-          
+                         Console.WriteLine();
+                     } */
+                }
+                else
+                {
+                    MessageBox.Show("Sản Phẩm Đã Hết Hàng");
+                    LoadPage();
+                }
 
-        }*/
-            CartItem temp = new CartItem(ID, amount, money);
-            AddItem(temp);
-            UpdateTotal();
 
-            // CreateTempCart();
+            }
+
         }
 
     }

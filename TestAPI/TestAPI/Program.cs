@@ -142,7 +142,6 @@ app.MapPost("/api/findcart", async (TempCartService service, Carts temp) =>
     {
 
         cart.Id = "0";
-        cart.buyer = "0";
         return cart;
     }
     else
@@ -165,7 +164,8 @@ app.MapPut("/api/updatecart", async (TempCartService service, Carts temp) =>
     // if (movie is null) return Results.NotFound();
     //return Results.NoContent();
 
-    await service.Update(temp.buyer, temp);
+    await service.Update(temp.Id, temp);
+    //return Results.Ok();
 });
 
 

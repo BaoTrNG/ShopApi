@@ -34,7 +34,7 @@ namespace ShopApp.Frm.UserFrm
         {
             Console.WriteLine("load");
             //   gridView1.RowHeight = 50;
-            string Buyer = "{\"buyer\":\"" + Program.Username + "\"}";
+            string Buyer = "{\"id\":\"" + Program.Username + "\"}";
             var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findcart");
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
@@ -51,12 +51,14 @@ namespace ShopApp.Frm.UserFrm
 
                 var Cart = JsonSerializer.Deserialize<TempCart>(result);
                 Program.tempCart = Cart;
-                if (Cart.buyer != "0")
+                if (Cart.id != "0")
                 {
+                    Console.WriteLine("load cart");
                     BindingSource bs = new BindingSource();
                     bs.DataSource = Cart.items;
                     gridControl1.DataSource = bs;
                 }
+                Console.WriteLine("NO cart");
             }
             gridView1.OptionsBehavior.Editable = false;
             Program.isload = true;
@@ -73,11 +75,12 @@ namespace ShopApp.Frm.UserFrm
         }
         private void Cartfrm_Load(object sender, EventArgs e)
         {
-            if (Program.isload == false)
-                LoadPage();
-            else
-                ReloadPage();
+            /* if (Program.isload == false)
+                 ReloadPage();
+             else
+                 LoadPage(); */
 
+            ReloadPage();
         }
 
     }
