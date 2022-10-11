@@ -69,7 +69,6 @@ namespace ShopApp.Frm
             if (frm != null)
             {
                 frm.Activate();
-
             }
 
             else
@@ -81,26 +80,19 @@ namespace ShopApp.Frm
             }
             /*   Shop f = new Shop();
                f.MdiParent = this;
-               f.Show();*/
+               f.Show(); */
         }
 
         private void Cartbtn_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
         {
-            /*   Form frm = this.CheckExists(typeof(Cartfrm));
-               if (frm != null)
-               {
-                   frm.Activate();
-                   frm.Refresh();
-               }
-               else
-               {
-                   Cartfrm f = new Cartfrm();
-                   f.MdiParent = this;
-                   f.Show();
-               } */
-            Cartfrm f = new Cartfrm();
-            f.MdiParent = this;
-            f.Show();
+            if (Program.tempCart.items.Count != 0)
+            {
+                Cartfrm f = new Cartfrm();
+                f.MdiParent = this;
+                f.Show();
+            }
+            else MessageBox.Show("Giỏ Hàng Trống");
+
         }
     }
 }

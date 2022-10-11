@@ -14,6 +14,8 @@ D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\MongoDB.Driver.dll
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\MongoDB.Driver.Core.dll
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\MongoDB.Libmongocrypt.dll
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\SharpCompress.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\System.Text.Encodings.Web.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\System.Text.Json.dll
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\linux\native\libsnappy64.so
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\linux\native\libzstd.so
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\osx\native\libsnappy64.dylib
@@ -24,6 +26,7 @@ D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\win\native\snappy64.dll
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\linux\native\libmongocrypt.so
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\osx\native\libmongocrypt.dylib
 D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\win\native\mongocrypt.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.csproj.AssemblyReference.cache
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.GeneratedMSBuildEditorConfig.editorconfig
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.AssemblyInfoInputs.cache
@@ -39,6 +42,3 @@ D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\refint\TestAPI.dll
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.pdb
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.genruntimeconfig.cache
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\ref\TestAPI.dll
-D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\System.Text.Encodings.Web.dll
-D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\System.Text.Json.dll
-D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll

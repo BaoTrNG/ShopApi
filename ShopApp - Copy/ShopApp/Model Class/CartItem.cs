@@ -20,4 +20,6 @@ namespace ShopApp.Model_Class
         }
 
     }
+
+
 }

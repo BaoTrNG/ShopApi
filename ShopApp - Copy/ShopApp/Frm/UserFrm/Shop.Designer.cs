@@ -68,9 +68,10 @@
             this.panelControl1.Controls.Add(this.label1);
             this.panelControl1.Controls.Add(this.e2);
             this.panelControl1.Controls.Add(this.e1);
-            this.panelControl1.Location = new System.Drawing.Point(0, 339);
+            this.panelControl1.Location = new System.Drawing.Point(0, 296);
+            this.panelControl1.Margin = new System.Windows.Forms.Padding(5);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(454, 337);
+            this.panelControl1.Size = new System.Drawing.Size(570, 324);
             this.panelControl1.TabIndex = 0;
             // 
             // e4
@@ -80,7 +81,8 @@
             0,
             0,
             0});
-            this.e4.Location = new System.Drawing.Point(105, 182);
+            this.e4.Location = new System.Drawing.Point(124, 171);
+            this.e4.Margin = new System.Windows.Forms.Padding(5);
             this.e4.Name = "e4";
             this.e4.Properties.Buttons.AddRange(new DevExpress.XtraEditors.Controls.EditorButton[] {
             new DevExpress.XtraEditors.Controls.EditorButton(DevExpress.XtraEditors.Controls.ButtonPredefines.Combo)});
@@ -96,22 +98,24 @@
             0,
             0});
             this.e4.Properties.UseReadOnlyAppearance = false;
-            this.e4.Size = new System.Drawing.Size(70, 24);
+            this.e4.Size = new System.Drawing.Size(110, 24);
             this.e4.TabIndex = 12;
             this.e4.EditValueChanged += new System.EventHandler(this.e4_EditValueChanged_1);
             // 
             // e5
             // 
-            this.e5.Location = new System.Drawing.Point(253, 184);
+            this.e5.Location = new System.Drawing.Point(335, 172);
+            this.e5.Margin = new System.Windows.Forms.Padding(5);
             this.e5.Name = "e5";
             this.e5.Properties.ReadOnly = true;
-            this.e5.Size = new System.Drawing.Size(166, 22);
+            this.e5.Size = new System.Drawing.Size(228, 22);
             this.e5.TabIndex = 11;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(181, 190);
+            this.label5.Location = new System.Drawing.Point(259, 175);
+            this.label5.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(66, 16);
             this.label5.TabIndex = 10;
@@ -119,26 +123,30 @@
             // 
             // e3
             // 
-            this.e3.Location = new System.Drawing.Point(114, 99);
+            this.e3.Location = new System.Drawing.Point(124, 114);
+            this.e3.Margin = new System.Windows.Forms.Padding(5);
             this.e3.Name = "e3";
             this.e3.Properties.ReadOnly = true;
-            this.e3.Size = new System.Drawing.Size(125, 22);
+            this.e3.Size = new System.Drawing.Size(195, 22);
             this.e3.TabIndex = 8;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(5, 190);
+            this.label4.Location = new System.Drawing.Point(20, 179);
+            this.label4.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(94, 16);
             this.label4.TabIndex = 7;
             this.label4.Text = "Số Lượng Mua:";
+            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // Buybtn
             // 
-            this.Buybtn.Location = new System.Drawing.Point(110, 241);
+            this.Buybtn.Location = new System.Drawing.Point(153, 228);
+            this.Buybtn.Margin = new System.Windows.Forms.Padding(5);
             this.Buybtn.Name = "Buybtn";
-            this.Buybtn.Size = new System.Drawing.Size(137, 29);
+            this.Buybtn.Size = new System.Drawing.Size(214, 45);
             this.Buybtn.TabIndex = 6;
             this.Buybtn.Text = "Thêm Vào Giỏ Hàng";
             this.Buybtn.Click += new System.EventHandler(this.Buybtn_Click);
@@ -146,7 +154,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 102);
+            this.label3.Location = new System.Drawing.Point(21, 117);
+            this.label3.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(92, 16);
             this.label3.TabIndex = 4;
@@ -155,7 +164,8 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 61);
+            this.label2.Location = new System.Drawing.Point(20, 78);
+            this.label2.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(97, 16);
             this.label2.TabIndex = 3;
@@ -164,7 +174,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 23);
+            this.label1.Location = new System.Drawing.Point(21, 37);
+            this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(96, 16);
             this.label1.TabIndex = 2;
@@ -172,18 +183,20 @@
             // 
             // e2
             // 
-            this.e2.Location = new System.Drawing.Point(114, 58);
+            this.e2.Location = new System.Drawing.Point(124, 75);
+            this.e2.Margin = new System.Windows.Forms.Padding(5);
             this.e2.Name = "e2";
             this.e2.Properties.ReadOnly = true;
-            this.e2.Size = new System.Drawing.Size(125, 22);
+            this.e2.Size = new System.Drawing.Size(195, 22);
             this.e2.TabIndex = 1;
             // 
             // e1
             // 
-            this.e1.Location = new System.Drawing.Point(114, 20);
+            this.e1.Location = new System.Drawing.Point(124, 31);
+            this.e1.Margin = new System.Windows.Forms.Padding(5);
             this.e1.Name = "e1";
             this.e1.Properties.ReadOnly = true;
-            this.e1.Size = new System.Drawing.Size(125, 22);
+            this.e1.Size = new System.Drawing.Size(195, 22);
             this.e1.TabIndex = 0;
             // 
             // webView21
@@ -191,23 +204,26 @@
             this.webView21.AllowExternalDrop = true;
             this.webView21.CreationProperties = null;
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView21.Location = new System.Drawing.Point(450, 341);
+            this.webView21.Location = new System.Drawing.Point(571, 296);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(823, 352);
+            this.webView21.Size = new System.Drawing.Size(763, 324);
             this.webView21.TabIndex = 3;
             this.webView21.ZoomFactor = 1D;
             // 
             // gridView1
             // 
+            this.gridView1.DetailHeight = 546;
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             // 
             // gridControl1
             // 
-            this.gridControl1.Location = new System.Drawing.Point(0, 1);
+            this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(5);
+            this.gridControl1.Location = new System.Drawing.Point(0, -2);
             this.gridControl1.MainView = this.gridView1;
+            this.gridControl1.Margin = new System.Windows.Forms.Padding(5);
             this.gridControl1.Name = "gridControl1";
-            this.gridControl1.Size = new System.Drawing.Size(1273, 341);
+            this.gridControl1.Size = new System.Drawing.Size(1334, 299);
             this.gridControl1.TabIndex = 2;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
@@ -219,7 +235,7 @@
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1274, 705);
+            this.ClientSize = new System.Drawing.Size(1363, 725);
             this.Controls.Add(this.webView21);
             this.Controls.Add(this.gridControl1);
             this.Controls.Add(this.panelControl1);

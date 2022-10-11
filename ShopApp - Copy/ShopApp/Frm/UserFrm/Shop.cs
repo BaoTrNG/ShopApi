@@ -29,9 +29,10 @@ namespace ShopApp.Frm.UserFrm
         {
             InitializeComponent();
 
+
         }
         CartModel cart = new CartModel();
-        private int checkcart = 0;
+
         private string ID;
         private int amount;
         private double money;
@@ -73,7 +74,7 @@ namespace ShopApp.Frm.UserFrm
 
         private void LoadPage()
         {
-            //Console.WriteLine("update2");
+            // Console.WriteLine("load shop");
             cart.buyer = Program.Username;
             cart.date = DateTime.Now.ToString("dd/MM/yyyy");
             cart.status = "pending";
@@ -101,7 +102,6 @@ namespace ShopApp.Frm.UserFrm
                 gridView1.OptionsBehavior.Editable = false;
                 gridView1.Columns["linkvid"].Visible = false;
             }
-
         }
 
         private void LoadCart()
@@ -145,10 +145,8 @@ namespace ShopApp.Frm.UserFrm
 
         private void Shop_Load(object sender, EventArgs e)
         {
-            //Console.WriteLine("update1");
             LoadCart();
             LoadPage();
-
         }
 
 
@@ -173,7 +171,7 @@ namespace ShopApp.Frm.UserFrm
 
             string sHTML = "<!DOCTYPE html>" + "<head>" + "</head>" +
 "<body>" +
-"<iframe width = \"670\" height = \"248\" src =  " + url + "></iframe> " +
+"<iframe width = \"615\" height = \"245\" src =  " + url + "></iframe> " +
 "</body>" +
 "</html>";
             await webView21.EnsureCoreWebView2Async();
@@ -276,11 +274,13 @@ namespace ShopApp.Frm.UserFrm
             }
             var httpResponse = (HttpWebResponse)await httpWebRequest.GetResponseAsync();
             int b = (int)httpResponse.StatusCode;
+            // MessageBox.Show("Đang Thực Hiện");
             if (b == 200)
             {
                 //   Program.testCart = Program.tempCart;
                 //   Program.testCart.id = "te";
                 //  CreateTempCart();
+
                 MessageBox.Show("Thành Công");
             }
             else
@@ -330,14 +330,6 @@ namespace ShopApp.Frm.UserFrm
                     UpdateTempCart();
                     temp = null; //free memory
 
-                    /* foreach (var item in Program.tempCart.items)
-                     {
-                         Console.WriteLine(item.id);
-                         Console.WriteLine(item.amount);
-                         Console.WriteLine(item.price);
-
-                         Console.WriteLine();
-                     } */
                 }
                 else
                 {
@@ -350,5 +342,9 @@ namespace ShopApp.Frm.UserFrm
 
         }
 
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -5,23 +5,23 @@ builder.Services.Configure<ShopDbSetting>(builder.Configuration.GetSection("Shop
 builder.Services.AddSingleton<ServiceLogin>();
 builder.Services.AddSingleton<UsersService>();
 builder.Services.AddSingleton<TempCartService>();
+builder.Services.AddSingleton<OrderService>();
+
 //builder.Services.AddSingleton<Test>();
 
 
 var app = builder.Build();
 string art = "haha⠀ ";
 
-
-// get all users
-app.MapGet("/api/get", async (ServiceLogin moviesService) => await moviesService.Get());
 app.MapGet("", () => art);
 
-/*app.MapPost("/api/movies", async (ServiceLogin moviesService, String id) =>
-{
-    await moviesService.FindUser(id);
-    //var Login = await moviesService.FindUser(id);
-    return Results.Ok();
-}); */
+
+
+
+///////////////////////// USER SERVICE //////////////////////////
+
+
+app.MapGet("/api/get", async (ServiceLogin moviesService) => await moviesService.Get());
 
 //Auth user by url parameter
 app.MapPost("/api/login/{id}/{pass}", async (ServiceLogin moviesService, string id, string pass) =>
@@ -53,49 +53,6 @@ app.MapPost("/api/login", async (ServiceLogin login, Users user) =>
     // return Check is null ? 0 : 1;
 });
 
-
-//đây là api để test json_list of object post method
-app.MapPost("/api/login2", async (ServiceLogin login, List<Users> users) =>
-{
-    List<int> check = new List<int>();
-    // Array
-    List<ResponseItems> responseItems = new List<ResponseItems>();
-    foreach (var user in users)
-    {
-        ResponseItems item = new ResponseItems();
-        var Check = await login.GetUserJson(user);
-        if (Check is null)
-        {
-            check.Add(0);
-            item.Id = 0;
-            responseItems.Add(item);
-        }
-        else
-        {
-            if (Check.Type == "ADMIN")
-            {
-                check.Add(12);
-                item.Id = 12;
-                responseItems.Add(item);
-
-            }
-            else
-            {
-                check.Add(11);
-                item.Id = 11;
-                responseItems.Add(item);
-            }
-        }
-    }
-    return responseItems;
-    // return Check is null ? 0 : 1;
-});
-
-
-
-
-
-
 app.MapPost("/api/create/checkid", async (ServiceLogin registration, Users user) =>
 {
     var Check = await registration.CheckIdJson(user);
@@ -119,6 +76,8 @@ app.MapPost("/api/createUser", async (ServiceLogin service, Users user) =>
 
 
 
+///////////////////////////// ITEM SERVICE  //////////////////////////////
+
 //Find all items
 app.MapGet("/api/getitems", async (UsersService service) => await service.GetAllItems());
 
@@ -132,6 +91,58 @@ app.MapGet("/api/checkremain/{id}/{remain}", async (UsersService service, string
     else return 1;
 });
 
+
+//đây là api để test json_list of object post method 
+app.MapPost("/api/checkitem", async (UsersService service, List<CartItem> items) =>
+{
+
+    List<ResponseItems> responseItems = new List<ResponseItems>();
+    List<ResponseItems> ErrorresponseItems = new List<ResponseItems>();
+    foreach (var item in items)
+    {
+        ResponseItems code = new ResponseItems();
+        var Check = await service.CheckRemain(item.ID, item.amount);
+        Console.WriteLine(item.ID);
+        Console.WriteLine(Check.Id);
+        if (Check.Remain < item.amount)
+        {
+            ResponseItems temp = new ResponseItems();
+            temp.Id = item.ID;
+            ErrorresponseItems.Add(temp);
+        }
+    }
+    if (ErrorresponseItems is null) // no error return empty list
+    {
+        Console.WriteLine("null");
+        return responseItems;
+    }
+    else
+    {
+        Console.WriteLine("not null"); // return list of error item
+        return ErrorresponseItems;
+    }
+
+});
+
+//update item
+app.MapPut("/api/finditem", async (UsersService service, CartItem item) =>
+{
+    var check = await service.FindItem(item);
+    Console.WriteLine(check.Remain);
+    check.Remain = check.Remain - item.amount;
+    Console.WriteLine(check.Remain);
+    await service.Update(check.Id, check);
+    //return Results.Ok();
+});
+
+
+
+
+
+
+
+
+////////////////////////  TEMP CART SERVICE  //////////////////////////////
 
 //find cart by id
 app.MapPost("/api/findcart", async (TempCartService service, Carts temp) =>
@@ -172,43 +183,32 @@ app.MapPut("/api/updatecart", async (TempCartService service, Carts temp) =>
 
 
 
-/// <summary>
-/// Update a movie
-/// </summary>
-/*app.MapPut("/api/movies/{id}", async (Service moviesService, string id, Shop updatedMovie) =>
+////////////////////////  ORDER SERVICE  /////////////////////////////
+// tìm order theo tên user
+app.MapPost("/api/findorder", async (OrderService service, Order temp) =>
 {
-    var movie = await moviesService.Get(id);
-    if (movie is null) return Results.NotFound();
+    var check = await service.FindOrder(temp);
 
-    updatedMovie.Id = movie.Id;
-    await moviesService.Update(id, updatedMovie);
-
-    return Results.NoContent();
+    return check;
 });
 
-/// <summary>
-/// Delete a movie
-/// </summary>
-app.MapDelete("/api/movies/{id}", async (Service moviesService, string id) =>
+app.MapGet("/api/getorder", async (OrderService service) => await service.Get());
+
+//tạo order
+app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
 {
-    var movie = await moviesService.Get(id);
-    if (movie is null) return Results.NotFound();
 
-    await moviesService.Remove(movie.Id);
+    await service.Create(temp);
+    return Results.Ok();
 
-    return Results.NoContent();
-});*/
+});
 
+app.MapPost("/api/createp", async (OrderService service, Order temp) =>
+{
 
+    await service.CreateP(temp);
+    return Results.Ok();
 
-
-
-
-
-
-
-
-
-
+});
 
 app.Run();

@@ -23,7 +23,7 @@ namespace ShopApp
         static void Main()
         {
             isload = false;
-
+            // IsValid = 0;
             /*  Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
       AppDomain.CurrentDomain.FriendlyName, 11000); */
             Application.EnableVisualStyles();

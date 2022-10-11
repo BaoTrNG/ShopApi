@@ -18,9 +18,12 @@ namespace TestAPI.Data
         public async Task<List<Items>> GetAllItems() =>
           await _items.Find(m => m.Remain > 0).ToListAsync();
         public async Task<Items> CheckRemain(string id, int remain) =>
-         await _items.Find(m => m.Id == id).FirstOrDefaultAsync();
+         await _items.Find(m => m.Id == id).FirstOrDefaultAsync(); //transaction
 
-
+        public async Task<Items> FindItem(CartItem item) =>
+           await _items.Find(m => m.Id == item.ID).FirstOrDefaultAsync();
+        public async Task Update(string id, Items temp) =>
+       await _items.ReplaceOneAsync(m => m.Id == id, temp); //transaction
 
 
     }
