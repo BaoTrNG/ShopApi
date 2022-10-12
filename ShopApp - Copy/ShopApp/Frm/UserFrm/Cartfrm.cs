@@ -21,13 +21,15 @@ using DevExpress.XtraGrid.Columns;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraEditors.Controls;
 using DevExpress.Utils;
-
+using System.Text.RegularExpressions;
 
 namespace ShopApp.Frm.UserFrm
 {
     public partial class Cartfrm : DevExpress.XtraEditors.XtraForm
     {
         private Order order;
+
+
         public Cartfrm()
         {
             InitializeComponent();
@@ -35,12 +37,17 @@ namespace ShopApp.Frm.UserFrm
             Delbtn.Visible = false;
             gridView1.OptionsBehavior.Editable = false;
             order = new Order(Program.tempCart.id);
+            this.PhoneEdit.Properties.Mask.EditMask = "[0-9]+\\d*";
+            this.PhoneEdit.Properties.Mask.MaskType = DevExpress.XtraEditors.Mask.MaskType.RegEx;
+            NotiLabel.Text = "";
+
         }
         private string ID;
         private int amount;
         private double money;
         private double Oldmoney;
         private string address;
+        private string phone;
         private string payment;
         private void LoadPage()
         {
@@ -226,6 +233,7 @@ namespace ShopApp.Frm.UserFrm
             order.date = dateTime.ToString("dd-MM-yyyy HH:mm:ss"); // for 24hr format
             order.payment = payment;
             order.address = address;
+            order.phone = phone;
             order.items = Program.tempCart.items;
             order.total = Program.tempCart.total;
             var json = JsonSerializer.Serialize(order);
@@ -307,6 +315,10 @@ namespace ShopApp.Frm.UserFrm
             {
                 MessageBox.Show("Vui Lòng Điền Địa Chỉ");
             }
+            else if (phone == null)
+            {
+                MessageBox.Show("Vui Lòng Điền Số Điện Thoại");
+            }
             else
             {
                 CheckItemsAndOrder();
@@ -319,9 +331,33 @@ namespace ShopApp.Frm.UserFrm
             payment = comboBox1.Text;
         }
 
-        private void Address_TextChanged(object sender, EventArgs e)
+        private void Addressedit_TextChanged(object sender, EventArgs e)
         {
             address = Addressedit.Text;
         }
+
+
+
+
+
+        private void PhoneEdit_EditValueChanged(object sender, EventArgs e)
+        {
+            if (PhoneEdit.Text.Count() != 0)
+            {
+
+                if (PhoneEdit.Text[0] != '0')
+                {
+                    NotiLabel.Text = "Sai Đầu Số Điện Thoại";
+                }
+                else
+                {
+                    phone = PhoneEdit.Text;
+                    NotiLabel.Text = "";
+                }
+            }
+
+        }
+
+
     }
 }

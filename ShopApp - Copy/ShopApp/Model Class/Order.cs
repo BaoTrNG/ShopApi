@@ -10,6 +10,7 @@ namespace ShopApp.Model_Class
     {
         public string id { get; set; }
         public string buyer { get; set; }
+        public string phone { get; set; }
         public string status { get; set; }
         public string payment { get; set; }
         public string address { get; set; }
@@ -18,13 +19,14 @@ namespace ShopApp.Model_Class
         public double total { get; set; }
         public List<CartItem> items { get; set; }
 
-
+        public List<Admin> admins { get; set; }
         public Order(string buyer)
         {
 
             this.buyer = buyer;
 
             this.status = "pending";
+            this.admins = new List<Admin>();
 
         }
 

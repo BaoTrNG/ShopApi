@@ -46,6 +46,9 @@
             this.e1 = new DevExpress.XtraEditors.TextEdit();
             this.Orderbtn = new DevExpress.XtraEditors.SimpleButton();
             this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.NotiLabel = new DevExpress.XtraEditors.LabelControl();
+            this.PhoneEdit = new DevExpress.XtraEditors.TextEdit();
+            this.label7 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.Addressedit = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -62,6 +65,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.e1.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
             this.panelControl2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PhoneEdit.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Totaltext.Properties)).BeginInit();
             this.SuspendLayout();
             // 
@@ -234,7 +238,7 @@
             // 
             // Orderbtn
             // 
-            this.Orderbtn.Location = new System.Drawing.Point(246, 218);
+            this.Orderbtn.Location = new System.Drawing.Point(255, 231);
             this.Orderbtn.Margin = new System.Windows.Forms.Padding(5);
             this.Orderbtn.Name = "Orderbtn";
             this.Orderbtn.Size = new System.Drawing.Size(160, 45);
@@ -244,6 +248,9 @@
             // 
             // panelControl2
             // 
+            this.panelControl2.Controls.Add(this.NotiLabel);
+            this.panelControl2.Controls.Add(this.PhoneEdit);
+            this.panelControl2.Controls.Add(this.label7);
             this.panelControl2.Controls.Add(this.comboBox1);
             this.panelControl2.Controls.Add(this.Addressedit);
             this.panelControl2.Controls.Add(this.label6);
@@ -257,6 +264,32 @@
             this.panelControl2.Size = new System.Drawing.Size(826, 328);
             this.panelControl2.TabIndex = 2;
             // 
+            // NotiLabel
+            // 
+            this.NotiLabel.Location = new System.Drawing.Point(33, 244);
+            this.NotiLabel.Name = "NotiLabel";
+            this.NotiLabel.Size = new System.Drawing.Size(75, 16);
+            this.NotiLabel.TabIndex = 26;
+            this.NotiLabel.Text = "labelControl1";
+            // 
+            // PhoneEdit
+            // 
+            this.PhoneEdit.Location = new System.Drawing.Point(299, 140);
+            this.PhoneEdit.Name = "PhoneEdit";
+            this.PhoneEdit.Properties.MaxLength = 10;
+            this.PhoneEdit.Size = new System.Drawing.Size(254, 22);
+            this.PhoneEdit.TabIndex = 24;
+            this.PhoneEdit.EditValueChanged += new System.EventHandler(this.PhoneEdit_EditValueChanged);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(30, 146);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(93, 16);
+            this.label7.TabIndex = 23;
+            this.label7.Text = "Số Điện Thoại:";
+            // 
             // comboBox1
             // 
             this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -264,7 +297,7 @@
             this.comboBox1.Items.AddRange(new object[] {
             "COD",
             "ATM"});
-            this.comboBox1.Location = new System.Drawing.Point(299, 93);
+            this.comboBox1.Location = new System.Drawing.Point(299, 85);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(254, 24);
             this.comboBox1.TabIndex = 22;
@@ -272,16 +305,16 @@
             // 
             // Addressedit
             // 
-            this.Addressedit.Location = new System.Drawing.Point(108, 163);
+            this.Addressedit.Location = new System.Drawing.Point(108, 194);
             this.Addressedit.Name = "Addressedit";
             this.Addressedit.Size = new System.Drawing.Size(445, 23);
             this.Addressedit.TabIndex = 21;
-            this.Addressedit.TextChanged += new System.EventHandler(this.Address_TextChanged);
+            this.Addressedit.TextChanged += new System.EventHandler(this.Addressedit_TextChanged);
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(30, 166);
+            this.label6.Location = new System.Drawing.Point(30, 201);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(53, 16);
             this.label6.TabIndex = 20;
@@ -298,7 +331,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(30, 101);
+            this.label3.Location = new System.Drawing.Point(30, 93);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(161, 16);
             this.label3.TabIndex = 16;
@@ -340,6 +373,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
             this.panelControl2.ResumeLayout(false);
             this.panelControl2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PhoneEdit.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.Totaltext.Properties)).EndInit();
             this.ResumeLayout(false);
 
@@ -370,5 +404,8 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox Addressedit;
         private System.Windows.Forms.ComboBox comboBox1;
+        private DevExpress.XtraEditors.TextEdit PhoneEdit;
+        private System.Windows.Forms.Label label7;
+        private DevExpress.XtraEditors.LabelControl NotiLabel;
     }
 }

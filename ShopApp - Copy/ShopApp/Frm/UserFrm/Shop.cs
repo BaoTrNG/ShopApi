@@ -101,6 +101,7 @@ namespace ShopApp.Frm.UserFrm
                 gridControl1.DataSource = list;
                 gridView1.OptionsBehavior.Editable = false;
                 gridView1.Columns["linkvid"].Visible = false;
+
             }
         }
 

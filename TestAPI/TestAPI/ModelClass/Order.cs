@@ -10,6 +10,7 @@ namespace TestAPI.ModelClass
         [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
         public string Id { get; set; }
         public string buyer { get; set; }
+        public string phone { get; set; }
         public string status { get; set; }
         public string payment { get; set; }
         public string address { get; set; }
@@ -17,5 +18,9 @@ namespace TestAPI.ModelClass
         public double total { get; set; }
         [BsonElement("items")]
         public List<CartItem> items { get; set; }
+
+        [BsonElement("admins")]
+        public List<Admin> admins { get; set; }
+
     }
 }

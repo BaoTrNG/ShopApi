@@ -245,6 +245,12 @@
     <Compile Include="Frm\UserFrm\Cartfrm.Designer.cs">
       <DependentUpon>Cartfrm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Frm\UserFrm\Orderfrm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Frm\UserFrm\Orderfrm.Designer.cs">
+      <DependentUpon>Orderfrm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Frm\UserFrm\Shop.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -257,6 +263,7 @@
     <Compile Include="Frm\UserFrm\Shop2.Designer.cs">
       <DependentUpon>Shop2.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model Class\Admin.cs" />
     <Compile Include="Model Class\CartItem.cs" />
     <Compile Include="Model Class\CartModel.cs" />
     <Compile Include="Model Class\Items.cs" />
@@ -274,6 +281,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Frm\UserFrm\Cartfrm.resx">
       <DependentUpon>Cartfrm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Frm\UserFrm\Orderfrm.resx">
+      <DependentUpon>Orderfrm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Frm\UserFrm\Shop.resx">
       <DependentUpon>Shop.cs</DependentUpon>
@@ -306,6 +316,7 @@
     <None Include="Properties\DataSources\ShopApp.Model_Class.CartItem.datasource" />
     <None Include="Properties\DataSources\ShopApp.Model_Class.Items.datasource" />
     <None Include="Properties\DataSources\ShopApp.Model_Class.Itemss.datasource" />
+    <None Include="Properties\DataSources\ShopApp.Model_Class.Order.datasource" />
     <None Include="Properties\DataSources\ShopApp.Model_Class.TempCart.datasource" />
     <None Include="Properties\DataSources\ShopApp.Properties.Resources.datasource" />
     <None Include="Properties\DataSources\ShopApp.Properties.Settings.datasource" />

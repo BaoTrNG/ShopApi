@@ -342,3 +342,4 @@ D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\de\DevExpress.XtraVerticalGrid.v21.2
 D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\es\DevExpress.XtraVerticalGrid.v21.2.resources.dll
 D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\ja\DevExpress.XtraVerticalGrid.v21.2.resources.dll
 D:\WEB API\ShopApp - Copy\ShopApp\bin\Debug\ru\DevExpress.XtraVerticalGrid.v21.2.resources.dll
+D:\WEB API\ShopApp - Copy\ShopApp\obj\Debug\ShopApp.Frm.UserFrm.Orderfrm.resources

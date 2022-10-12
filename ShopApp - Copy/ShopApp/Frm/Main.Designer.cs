@@ -40,6 +40,8 @@
             this.Cartbtn = new DevExpress.XtraBars.BarButtonItem();
             this.ribbonPage1 = new DevExpress.XtraBars.Ribbon.RibbonPage();
             this.ribbonPageGroup1 = new DevExpress.XtraBars.Ribbon.RibbonPageGroup();
+            this.Orderbtn = new DevExpress.XtraBars.BarButtonItem();
+            this.Userbtn = new DevExpress.XtraBars.BarButtonItem();
             ((System.ComponentModel.ISupportInitialize)(this.itemsBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.navBarControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ribbonControl1)).BeginInit();
@@ -86,9 +88,11 @@
             this.ribbonControl1.ExpandCollapseItem,
             this.ribbonControl1.SearchEditItem,
             this.Shopbtn,
-            this.Cartbtn});
+            this.Cartbtn,
+            this.Orderbtn,
+            this.Userbtn});
             this.ribbonControl1.Location = new System.Drawing.Point(0, 0);
-            this.ribbonControl1.MaxItemId = 3;
+            this.ribbonControl1.MaxItemId = 6;
             this.ribbonControl1.Name = "ribbonControl1";
             this.ribbonControl1.OptionsMenuMinWidth = 289;
             this.ribbonControl1.Pages.AddRange(new DevExpress.XtraBars.Ribbon.RibbonPage[] {
@@ -125,7 +129,24 @@
             // 
             this.ribbonPageGroup1.ItemLinks.Add(this.Shopbtn, true);
             this.ribbonPageGroup1.ItemLinks.Add(this.Cartbtn, true);
+            this.ribbonPageGroup1.ItemLinks.Add(this.Orderbtn);
+            this.ribbonPageGroup1.ItemLinks.Add(this.Userbtn);
             this.ribbonPageGroup1.Name = "ribbonPageGroup1";
+            // 
+            // Orderbtn
+            // 
+            this.Orderbtn.Caption = "Đơn Hàng";
+            this.Orderbtn.Id = 4;
+            this.Orderbtn.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("barButtonItem1.ImageOptions.LargeImage")));
+            this.Orderbtn.Name = "Orderbtn";
+            this.Orderbtn.ItemClick += new DevExpress.XtraBars.ItemClickEventHandler(this.Orderbtn_ItemClick);
+            // 
+            // Userbtn
+            // 
+            this.Userbtn.Caption = "User";
+            this.Userbtn.Id = 5;
+            this.Userbtn.ImageOptions.LargeImage = ((System.Drawing.Image)(resources.GetObject("Userbtn.ImageOptions.LargeImage")));
+            this.Userbtn.Name = "Userbtn";
             // 
             // Main
             // 
@@ -162,5 +183,7 @@
         private DevExpress.XtraBars.BarButtonItem Cartbtn;
         private DevExpress.XtraBars.Ribbon.RibbonPage ribbonPage1;
         private DevExpress.XtraBars.Ribbon.RibbonPageGroup ribbonPageGroup1;
+        private DevExpress.XtraBars.BarButtonItem Orderbtn;
+        private DevExpress.XtraBars.BarButtonItem Userbtn;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using TestAPI.ModelClass;
 
@@ -25,6 +26,12 @@ namespace TestAPI.Data
        await _order.InsertOneAsync(order);
         public async Task CreateP(Order order)
         {
+            /*foreach (var admin in order.admin)
+            {
+                Console.WriteLine(admin.ID);
+            }*/
+            var json = order.ToJson();
+            Console.WriteLine(json);
             var mongoClient = new MongoClient("mongodb+srv://AuthLogin:123@shopdb.40xjquu.mongodb.net/test");
             var session = mongoClient.StartSession();
             var ORDER = session.Client.GetDatabase("Shop").GetCollection<Order>("Order");

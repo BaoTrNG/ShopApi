@@ -94,5 +94,38 @@ namespace ShopApp.Frm
             else MessageBox.Show("Giỏ Hàng Trống");
 
         }
+        private void GetOrder()
+        {
+            string json = "{\"buyer\":\"" + Program.Username + "\"}";
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findorder");
+            httpWebRequest.ContentType = "application/json";
+            httpWebRequest.Method = "POST";
+            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            {
+                streamWriter.Write(json);
+            }
+            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+            using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+            {
+                string result = streamReader.ReadToEnd();
+                var _Order = JsonSerializer.Deserialize<List<Order>>(result);
+
+                Console.WriteLine(result);
+                Program.tempOrder = _Order;
+
+            }
+
+        }
+        private void Orderbtn_ItemClick(object sender, DevExpress.XtraBars.ItemClickEventArgs e)
+        {
+            GetOrder();
+            if (Program.tempOrder.Count != 0)
+            {
+                Orderfrm f = new Orderfrm();
+                f.MdiParent = this;
+                f.Show();
+            }
+            else MessageBox.Show("Không có đơn hàng nào");
+        }
     }
 }

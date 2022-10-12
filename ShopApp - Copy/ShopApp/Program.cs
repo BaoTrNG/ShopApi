@@ -17,12 +17,14 @@ namespace ShopApp
         public static TempCart tempCart;
         public static TempCart testCart;
         public static bool isload;
-        // public static List<CartItem> cartItems;
+        public static List<Order> tempOrder;
         [STAThread]
 
         static void Main()
         {
+            tempOrder = new List<Order>();
             isload = false;
+
             // IsValid = 0;
             /*  Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
       AppDomain.CurrentDomain.FriendlyName, 11000); */
