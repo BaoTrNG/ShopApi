@@ -23,6 +23,9 @@ app.MapGet("", () => art);
 
 app.MapGet("/api/get", async (ServiceLogin moviesService) => await moviesService.Get());
 
+
+
+
 //Auth user by url parameter
 app.MapPost("/api/login/{id}/{pass}", async (ServiceLogin moviesService, string id, string pass) =>
 {
@@ -41,18 +44,28 @@ app.MapPost("/api/login", async (ServiceLogin login, Users user) =>
     }
     else
     {
-        if (Check.Type == "ADMIN")
+        if (Check.Status == "ok")
         {
-            return 12;
+            if (Check.Type == "ADMIN")
+            {
+                return 12;
+            }
+            else
+            {
+                return 11;
+            }
         }
-        else
-        {
-            return 11;
-        }
+        else return 13;
     }
     // return Check is null ? 0 : 1;
 });
+app.MapPost("/api/getadminphone", async (ServiceLogin login, Users user) =>
+{
 
+    var Check = await login.GetPhone(user.Id);
+
+    return Check.Phone;
+});
 app.MapPost("/api/create/checkid", async (ServiceLogin registration, Users user) =>
 {
     var Check = await registration.CheckIdJson(user);
@@ -64,16 +77,29 @@ app.MapPost("/api/create/checkemail", async (ServiceLogin registration, Users us
     return Check is null ? 0 : 1;
 });
 
-
-//Create new User
-app.MapPost("/api/createUser", async (ServiceLogin service, Users user) =>
+app.MapPost("/api/createuser", async (ServiceLogin service, Users user) =>
 {
-    await service.Create(user);
-    return Results.Ok();
+    Response res = new Response();
+    await service.CreateUser(res, user);
+    return res;
 });
 
 
+/*app.MapPost("/api/createuser", async (ServiceLogin service, Users user) =>
+{
+    Response res = new Response();
+    await service.CreateUser(res, user);
+    return res;
+}); */
 
+/////////////////ADMIN USER SERVICE///////////////////
+app.MapGet("/api/getalluser", async (ServiceLogin service) => await service.GetAllUser());
+app.MapPut("/api/updateuseradmin", (ServiceLogin service, Users user) =>
+{
+    Response res = new Response();
+    service.UpdateOrderAdmin(user.Id, res, user);
+    return res;
+});
 
 
 ///////////////////////////// ITEM SERVICE  //////////////////////////////
@@ -84,20 +110,69 @@ app.MapGet("/api/getitems", async (UsersService service) => await service.GetAll
 app.MapGet("/api/checkremain/{id}/{remain}", async (UsersService service, string id, int remain) =>
 {
     var check = await service.CheckRemain(id, remain);
-    if (check.Remain < remain)
+    if (check is null) return 0;
+    else if (check.Remain < remain)
     {
-        return 0;
+        return 2;
     }
     else return 1;
 });
 
+app.MapPut("/api/updateitem/", async (UsersService service, Items temp) =>
+{
+    Response res = new Response();
+    CartItem tempcart = new CartItem();
+    tempcart.ID = temp.Id;
+    var check = await service.FindItem(tempcart);
+    if (check is null)
+    {
+        res.code = 0;
+        res.msg = "Không Tìm Thấy Món Hàng";
+        return res;
+    }
+    else
+    {
+        await service.Update(res, temp.Id, temp);
+        return res;
+    }
+});
+
+
+app.MapPost("/api/createitem", async (UsersService service, Items temp) =>
+{
+    Response res = new Response();
+    await service.Create(res, temp);
+    return res;
+});
+
+app.MapDelete("/api/deleteitem/{id}", async (UsersService service, string id) =>
+{
+    Response res = new Response();
+    CartItem temp = new CartItem();
+    temp.ID = id;
+    var check = await service.FindItem(temp);
+    if (check is null)
+    {
+        res.code = 0;
+        res.msg = "Không Tìm Thấy Món Hàng";
+        return res;
+    }
+    else
+    {
+        await service.Delete(res, id);
+        return res;
+    }
+});
+
+
 
 //đây là api để test json_list of object post method 
-app.MapPost("/api/checkitem", async (UsersService service, List<CartItem> items) =>
+/*app.MapPost("/api/checkitem", async (UsersService service, List<CartItem> items) =>
 {
 
     List<ResponseItems> responseItems = new List<ResponseItems>();
     List<ResponseItems> ErrorresponseItems = new List<ResponseItems>();
+    List<ResponseItems> NullItems = new List<ResponseItems>();
     foreach (var item in items)
     {
         ResponseItems code = new ResponseItems();
@@ -122,7 +197,65 @@ app.MapPost("/api/checkitem", async (UsersService service, List<CartItem> items)
         return ErrorresponseItems;
     }
 
+}); */
+
+
+app.MapPost("/api/checkitemv2", async (UsersService service, List<CartItem> items) =>
+{
+
+    ResponseItems responseItems = new ResponseItems();
+    responseItems.code = "ok";
+    responseItems.Id = new List<string>();
+
+    ResponseItems ErrorresponseItems = new ResponseItems();
+    ErrorresponseItems.code = "error";
+    ErrorresponseItems.Id = new List<string>();
+
+    ResponseItems NullItems = new ResponseItems();
+    NullItems.code = "null";
+    NullItems.Id = new List<string>();
+    foreach (var item in items)
+    {
+
+        ResponseItems code = new ResponseItems();
+        var Check = await service.CheckRemain(item.ID, item.amount);
+
+        if (Check is null)
+        {
+            String temp = item.ID;
+            NullItems.Id.Add(temp);
+        }
+        else
+        {
+            if (Check.Remain < item.amount)
+            {
+                Console.WriteLine("not enough");
+                String temp = item.ID;
+                ErrorresponseItems.Id.Add(temp);
+            }
+        }
+    }
+    if (NullItems.Id.Count > 0)
+    {
+        Console.WriteLine("null");
+        return NullItems;
+    }
+    else if (ErrorresponseItems.Id.Count > 0) //  error return ErrorresponseItems
+    {
+        Console.WriteLine("not enough item");
+        return ErrorresponseItems;
+        ;
+    }
+    else
+    {
+        Console.WriteLine("enough");
+        Console.WriteLine("not null"); // return ok
+        return responseItems;
+    }
+
 });
+
+
 
 //update item
 app.MapPut("/api/finditem", async (UsersService service, CartItem item) =>
@@ -136,7 +269,25 @@ app.MapPut("/api/finditem", async (UsersService service, CartItem item) =>
 });
 
 
-
+app.MapGet("/api/checkitemid/{id}", async (UsersService service, string id) =>
+{
+    try
+    {
+        var check = await service.CheckItem(id);
+        if (check is null)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
+    }
+    catch (Exception e)
+    {
+        return 2;
+    }
+});
 
 
 
@@ -162,23 +313,27 @@ app.MapPost("/api/findcart", async (TempCartService service, Carts temp) =>
 });
 
 //create new temp cart
-app.MapPost("/api/createcart", async (TempCartService service, Carts temp) =>
+/*app.MapPost("/api/createcart", async (TempCartService service, Carts temp) =>
 {
     await service.Create(temp);
     return Results.Ok();
+}); */
+
+app.MapPost("/api/createcart", async (TempCartService service, Carts temp) =>
+{
+    Response res = new Response();
+    await service.CreateCart(res, temp);
+    return res;
 });
 
-//update temp cart
+
+
 app.MapPut("/api/updatecart", async (TempCartService service, Carts temp) =>
 {
-    // var movie = await service.GetCart(temp);
-    // if (movie is null) return Results.NotFound();
-    //return Results.NoContent();
-
-    await service.Update(temp.Id, temp);
-    //return Results.Ok();
+    Response res = new Response();
+    await service.UpdateCart(res, temp.Id, temp);
+    return res;
 });
-
 
 
 
@@ -192,7 +347,31 @@ app.MapPost("/api/findorder", async (OrderService service, Order temp) =>
     return check;
 });
 
+app.MapPost("/api/userorders", async (OrderService service, Order target) =>
+{
+    Response res = new Response();
+    await service.CountOrder(res, target.buyer);
+    return res;
+});
+
 app.MapGet("/api/getorder", async (OrderService service) => await service.Get());
+app.MapGet("/api/getorderstatus/{id}", async (OrderService service, string id) =>
+{
+    var check = await service.GetStatus(id);
+    if (check is null)
+    {
+        return 0;
+    }
+    else
+    {
+        if (check.status == "canceled" || check.status == "delivering")
+        {
+            return 0;
+        }
+        else return 1;
+    }
+});
+
 
 //tạo order
 app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
@@ -209,6 +388,59 @@ app.MapPost("/api/createp", async (OrderService service, Order temp) =>
     await service.CreateP(temp);
     return Results.Ok();
 
+});
+
+app.MapPut("/api/updateorder", async (OrderService service, Order temp) =>
+{
+
+    await service.UpdateOrder(temp.Id, temp);
+    return Results.Ok();
+
+});
+
+app.MapPut("/api/updateorderadmin", async (OrderService service, Order temp) =>
+{
+    Response res = new Response();
+    var check = await service.GetOrder(temp.Id);
+    if (check is null)
+    {
+        res.code = 3;
+        res.msg = "Order is not exist";
+        return res;
+    }
+    else
+    {
+        await service.UpdateOrderAdmin(temp.Id, temp, res);
+        return res;
+    }
+});
+
+app.MapPut("/api/deleteorderadmin", async (OrderService service, Order temp) =>
+{
+    Response res = new Response();
+    var check = await service.GetOrder(temp.Id);
+
+    if (check is null)
+    {
+        res.code = 3;
+        res.msg = "Order is not exist";
+        return res;
+    }
+    else
+    {
+        service.DeleteOrderAdmin(temp.Id, res);
+        return res;
+    }
+});
+
+
+app.MapPost("/api/getlistadmin", async (OrderService service, Order temp) =>
+{
+    Response res = new Response();
+    var check = await service.GetOrder(temp.Id);
+    List<Admin> admin = new List<Admin>();
+    admin = service.GetAdmin(temp.Id, admin);
+    return admin;
 });
 
 app.Run();

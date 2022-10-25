@@ -10,6 +10,7 @@ namespace TestAPI.ModelClass
 
 
         public string ID { get; set; }
-
+        [DataMember]
+        public string phone { get; set; }
     }
 }

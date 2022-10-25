@@ -22,8 +22,42 @@ namespace TestAPI.Data
           await _temp.Find(m => m.Id == temp.Id).FirstOrDefaultAsync();
 
 
-        public async Task Create(Carts temp) =>
-          await _temp.InsertOneAsync(temp);
+        /*  public async Task Create(Carts temp) =>
+            await _temp.InsertOneAsync(temp); */
+
+        public async Task CreateCart(Response res, Carts temp)
+        {
+            try
+            {
+                await _temp.InsertOneAsync(temp);
+                res.code = 1;
+                res.msg = "success";
+            }
+            catch (Exception e)
+            {
+                res.code = 0;
+                res.msg = "failed";
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        public async Task UpdateCart(Response res, string buyer, Carts temp)
+        {
+            try
+            {
+                await _temp.ReplaceOneAsync(m => m.Id == buyer, temp);
+                res.code = 1;
+                res.msg = "success";
+            }
+            catch (Exception e)
+            {
+                res.code = 0;
+                res.msg = "failed";
+                Console.WriteLine(e.Message);
+            }
+        }
+
+
         public async Task Update(string buyer, Carts temp) =>
         await _temp.ReplaceOneAsync(m => m.Id == buyer, temp);
 

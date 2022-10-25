@@ -9,7 +9,8 @@ namespace TestAPI.ModelClass
         public string Pass { get; set; }
         public string Type { get; set; }
         public string Email { get; set; } = null;
-
+        public string Phone { get; set; } = null;
+        public string Status { get; set; } = "ok";
 
     }
 

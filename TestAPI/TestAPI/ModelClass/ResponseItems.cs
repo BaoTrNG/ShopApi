@@ -3,7 +3,8 @@ namespace TestAPI.ModelClass
 {
     public class ResponseItems
     {
-        public string Id { get; set; }
+        public string code { get; set; }
+        public List<string> Id { get; set; }
 
     }
 }
