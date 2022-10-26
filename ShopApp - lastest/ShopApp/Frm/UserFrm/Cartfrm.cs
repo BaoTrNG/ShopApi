@@ -265,35 +265,47 @@ namespace ShopApp.Frm.UserFrm
         string notify;
         private void Order()
         {
-            DateTime dateTime = DateTime.Now;
-            order.date = dateTime.ToString("dd-MM-yyyy HH:mm:ss"); // for 24hr format
-            order.payment = payment;
-            order.address = address;
-            order.phone = phone;
-            order.items = Program.tempCart.items;
-            order.total = Program.tempCart.total;
-            var json = JsonSerializer.Serialize(order);
-            Console.WriteLine(json);
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createp");
-            httpWebRequest.ContentType = "application/json";
-            httpWebRequest.Method = "POST";
-            using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+            try
             {
-                streamWriter.Write(json);
-            }
-            var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-            int b = (int)httpResponse.StatusCode;
-            if (b == 200)
-            {
-                MessageBox.Show("Thành Công");
-                Program.tempCart.items.Clear();
-                Program.tempCart.total = 0;
-                ReloadPage();
+                DateTime dateTime = DateTime.Now;
+                order.date = dateTime.ToString("dd-MM-yyyy HH:mm:ss"); // for 24hr format
+                order.payment = payment;
+                order.address = address;
+                order.phone = phone;
+                order.items = Program.tempCart.items;
+                order.total = Program.tempCart.total;
+                var json = JsonSerializer.Serialize(order);
+                Console.WriteLine(json);
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createp");
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "POST";
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    streamWriter.Write(json);
+                }
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    string result = streamReader.ReadToEnd();
+                    Response res = JsonSerializer.Deserialize<Response>(result);
+                    if (res.code == 1)
+                    {
+                        MessageBox.Show("Đặt Hàng Thành Công");
+                        Program.tempCart.items = new List<CartItem>();
+                        Program.tempCart.total = 0;
+                        UpdateTempCart();
+                    }
+                    else if (res.code == 0)
+                    {
+                        string msg = " Đặt hàng thất bại";
+                        MessageBox.Show(msg + "\n" + res.msg);
+                    }
 
+                }
             }
-            else
+            catch (Exception e)
             {
-                MessageBox.Show("fail");
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -303,7 +315,7 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 var json = JsonSerializer.Serialize(Program.tempCart.items);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkitem");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkitemv2");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -332,10 +344,10 @@ namespace ShopApp.Frm.UserFrm
                             notify += item.id + " ";
                         }
                         MessageBox.Show("Các sản phẩm đã hết hàng:  " + notify + "\nLoại Bỏ Các Sản Phẩm Hết Hàng Khỏi Giỏ");
-                        ReloadPage();
+
                         UpdateTotal();
-                        UpdateTempCartForBuybtn(); // update khi xoá item khỏi giỏ hàng
-                                                   //  return false;
+                        UpdateTempCartForBuybtn(); // update khi xoá item khỏi giỏ hàng                                               
+                        ReloadPage();
                     }
                 }
             }
@@ -351,7 +363,7 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 var json = JsonSerializer.Serialize(Program.tempCart.items);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("http://localhost:5273/api/checkitemv2");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkitemv2");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -372,6 +384,10 @@ namespace ShopApp.Frm.UserFrm
                     {
                         Console.WriteLine("ok");
                         Order();
+                        //     UpdateTotal();
+                        //   UpdateTempCartForBuybtn();
+
+                        ReloadPage();
                     }
                     else if (res.code == "error")
                     {
@@ -382,10 +398,10 @@ namespace ShopApp.Frm.UserFrm
                             notify += id + " ";
                         }
                         MessageBox.Show("Các sản phẩm đã hết hàng:  " + notify + "\nLoại Bỏ Các Sản Phẩm Hết Hàng Khỏi Giỏ");
-                        ReloadPage();
+
                         UpdateTotal();
                         UpdateTempCartForBuybtn(); // update khi xoá item khỏi giỏ hàng
-                                                   //  return false;
+                        ReloadPage();
                     }
                     else if (res.code == "null")
                     {
@@ -396,10 +412,10 @@ namespace ShopApp.Frm.UserFrm
                             notify += id + " ";
                         }
                         MessageBox.Show("Các sản phẩm Không Tồn Tại:  " + notify + "\nLoại Bỏ Các Sản Phẩm Hết Hàng Khỏi Giỏ");
-                        ReloadPage();
+
                         UpdateTotal();
                         UpdateTempCartForBuybtn(); // update khi xoá item khỏi giỏ hàng
-                                                   //  return false;
+                        ReloadPage();
                     }
                 }
             }

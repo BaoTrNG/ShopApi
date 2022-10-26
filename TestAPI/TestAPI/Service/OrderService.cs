@@ -149,7 +149,7 @@ namespace TestAPI.Data
 
         }
 
-        public async Task CreateP(Order order)
+        public async Task CreateP(Response res, Order order)
         {
             /*foreach (var admin in order.admin)
             {
@@ -179,12 +179,15 @@ namespace TestAPI.Data
                 cart.items.Clear();
                 cart.total = 0;
                 await TEMPCART.UpdateOneAsync(session, m => m.Id == order.buyer, Builders<Carts>.Update.Set("items", cart.items).Set("total", cart.total));
-
+                res.code = 1;
+                res.msg = "ok";
                 session.CommitTransaction();
             }
             catch (Exception e)
             {
                 Console.WriteLine("exception: " + e.Message);
+                res.code = 0;
+                res.msg = e.Message;
                 session.AbortTransaction();
             }
         }

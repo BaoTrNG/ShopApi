@@ -166,38 +166,7 @@ app.MapDelete("/api/deleteitem/{id}", async (UsersService service, string id) =>
 
 
 
-//đây là api để test json_list of object post method 
-/*app.MapPost("/api/checkitem", async (UsersService service, List<CartItem> items) =>
-{
 
-    List<ResponseItems> responseItems = new List<ResponseItems>();
-    List<ResponseItems> ErrorresponseItems = new List<ResponseItems>();
-    List<ResponseItems> NullItems = new List<ResponseItems>();
-    foreach (var item in items)
-    {
-        ResponseItems code = new ResponseItems();
-        var Check = await service.CheckRemain(item.ID, item.amount);
-        Console.WriteLine(item.ID);
-        Console.WriteLine(Check.Id);
-        if (Check.Remain < item.amount)
-        {
-            ResponseItems temp = new ResponseItems();
-            temp.Id = item.ID;
-            ErrorresponseItems.Add(temp);
-        }
-    }
-    if (ErrorresponseItems is null) // no error return empty list
-    {
-        Console.WriteLine("null");
-        return responseItems;
-    }
-    else
-    {
-        Console.WriteLine("not null"); // return list of error item
-        return ErrorresponseItems;
-    }
-
-}); */
 
 
 app.MapPost("/api/checkitemv2", async (UsersService service, List<CartItem> items) =>
@@ -216,7 +185,7 @@ app.MapPost("/api/checkitemv2", async (UsersService service, List<CartItem> item
     NullItems.Id = new List<string>();
     foreach (var item in items)
     {
-
+        Console.WriteLine(item.ID);
         ResponseItems code = new ResponseItems();
         var Check = await service.CheckRemain(item.ID, item.amount);
 
@@ -384,9 +353,9 @@ app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
 
 app.MapPost("/api/createp", async (OrderService service, Order temp) =>
 {
-
-    await service.CreateP(temp);
-    return Results.Ok();
+    Response res = new Response();
+    await service.CreateP(res, temp);
+    return res;
 
 });
 
