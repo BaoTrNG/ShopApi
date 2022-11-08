@@ -42,7 +42,7 @@ namespace ShopApp
         public const string APIUpdateCart = "https://shopapiptithcm.azurewebsites.net/api/updatecart";
 
         //api cart
-        public const string APICreateOrder = "https://shopapiptithcm.azurewebsites.net/api/createp";
+        public const string APICreateOrder = "https://shopapiptithcm.azurewebsites.net/api/createorder";
         public const string APICheckItem = "https://shopapiptithcm.azurewebsites.net/api/checkitemv2";
         //APIUpdateCart
         //APIFindCart
