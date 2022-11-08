@@ -30,8 +30,7 @@ namespace ShopApp.Frm.UserFrm
             Updatebtn.Visible = false;
             CancelOrderbtn.Visible = false;
             EditOrderbtn.Visible = false;
-
-
+            this.gridView1.Columns[0].Visible = false;
         }
         private string id;
         private bool IsPhoneValid;
@@ -91,6 +90,7 @@ namespace ShopApp.Frm.UserFrm
         private void gridControl1_Click(object sender, EventArgs e)
         {
             id = gridView1.GetFocusedRowCellValue("id").ToString();
+            MsgBox.Text = gridView1.GetFocusedRowCellValue("msg").ToString();
             Updatebtn.Visible = false;
             PaymentBox.Enabled = false;
             AddressBox.ReadOnly = true;
@@ -187,18 +187,22 @@ namespace ShopApp.Frm.UserFrm
                     //  Console.WriteLine(json);
                 }
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
-                int b = (int)httpResponse.StatusCode;
-                // MessageBox.Show("Đang Thực Hiện");
-                if (b == 200)
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
                 {
-                    ReloadOrderFrm();
-                    MessageBox.Show("Thành Công");
+                    string result = streamReader.ReadToEnd();
+                    var response = JsonSerializer.Deserialize<Response>(result);
+                    if (response.code == 1)
+                    {
+                        ReloadOrderFrm();
+                        MessageBox.Show("Cập nhật thành công");
 
+                    }
+                    else if (response.code == 0)
+                    {
+                        MessageBox.Show("Cập nhật Thất Bại " + "\nresponse.msg");
+                    }
                 }
-                else
-                {
-                    MessageBox.Show("fail");
-                }
+
             }
             catch (Exception ex)
             {
@@ -319,6 +323,11 @@ namespace ShopApp.Frm.UserFrm
             EditOrderbtn.Visible = false;
             PhoneBox.ReadOnly = true;
             AddressBox.ReadOnly = true;
+        }
+
+        private void MsgBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

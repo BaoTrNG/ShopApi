@@ -38,6 +38,7 @@
             this.coldate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coltotal = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.PaymentBox = new DevExpress.XtraEditors.TextEdit();
             this.Statusbox = new System.Windows.Forms.ComboBox();
             this.Updatebtn = new DevExpress.XtraEditors.SimpleButton();
             this.Deletebtn = new DevExpress.XtraEditors.SimpleButton();
@@ -49,13 +50,14 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
-            this.PaymentBox = new DevExpress.XtraEditors.TextEdit();
+            this.MsgBox = new System.Windows.Forms.RichTextBox();
+            this.colmsg = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PhoneBox.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PaymentBox.Properties)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PhoneBox.Properties)).BeginInit();
             this.SuspendLayout();
             // 
             // gridControl1
@@ -72,8 +74,8 @@
             this.gridControl1.TabIndex = 1;
             this.gridControl1.ViewCollection.AddRange(new DevExpress.XtraGrid.Views.Base.BaseView[] {
             this.gridView1});
-            this.gridControl1.Click += new System.EventHandler(this.gridControl1_Click);
             this.gridControl1.ViewRegistered += new DevExpress.XtraGrid.ViewOperationEventHandler(this.gridControl1_ViewRegistered);
+            this.gridControl1.Click += new System.EventHandler(this.gridControl1_Click);
             // 
             // gridView1
             // 
@@ -83,7 +85,8 @@
             this.colpayment,
             this.coladdress,
             this.coldate,
-            this.coltotal});
+            this.coltotal,
+            this.colmsg});
             this.gridView1.GridControl = this.gridControl1;
             this.gridView1.Name = "gridView1";
             // 
@@ -158,8 +161,16 @@
             this.panelControl1.Location = new System.Drawing.Point(0, 336);
             this.panelControl1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.panelControl1.Name = "panelControl1";
-            this.panelControl1.Size = new System.Drawing.Size(720, 275);
+            this.panelControl1.Size = new System.Drawing.Size(630, 372);
             this.panelControl1.TabIndex = 2;
+            // 
+            // PaymentBox
+            // 
+            this.PaymentBox.Location = new System.Drawing.Point(142, 51);
+            this.PaymentBox.Name = "PaymentBox";
+            this.PaymentBox.Properties.ReadOnly = true;
+            this.PaymentBox.Size = new System.Drawing.Size(116, 22);
+            this.PaymentBox.TabIndex = 18;
             // 
             // Statusbox
             // 
@@ -273,13 +284,23 @@
             this.labelControl1.TabIndex = 0;
             this.labelControl1.Text = "Status:";
             // 
-            // PaymentBox
+            // MsgBox
             // 
-            this.PaymentBox.Location = new System.Drawing.Point(142, 51);
-            this.PaymentBox.Name = "PaymentBox";
-            this.PaymentBox.Properties.ReadOnly = true;
-            this.PaymentBox.Size = new System.Drawing.Size(116, 22);
-            this.PaymentBox.TabIndex = 18;
+            this.MsgBox.Font = new System.Drawing.Font("Times New Roman", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.MsgBox.Location = new System.Drawing.Point(629, 336);
+            this.MsgBox.Name = "MsgBox";
+            this.MsgBox.ReadOnly = true;
+            this.MsgBox.Size = new System.Drawing.Size(708, 372);
+            this.MsgBox.TabIndex = 3;
+            this.MsgBox.Text = "";
+            this.MsgBox.TextChanged += new System.EventHandler(this.MsgBox_TextChanged);
+            // 
+            // colmsg
+            // 
+            this.colmsg.FieldName = "msg";
+            this.colmsg.MinWidth = 25;
+            this.colmsg.Name = "colmsg";
+            this.colmsg.Width = 94;
             // 
             // AdminOrder
             // 
@@ -287,7 +308,8 @@
             this.Appearance.Options.UseBackColor = true;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1340, 612);
+            this.ClientSize = new System.Drawing.Size(1340, 750);
+            this.Controls.Add(this.MsgBox);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.gridControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -299,8 +321,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).EndInit();
             this.panelControl1.ResumeLayout(false);
             this.panelControl1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PhoneBox.Properties)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PaymentBox.Properties)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.PhoneBox.Properties)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -328,5 +350,7 @@
         private DevExpress.XtraEditors.LabelControl labelControl1;
         private System.Windows.Forms.ComboBox Statusbox;
         private DevExpress.XtraEditors.TextEdit PaymentBox;
+        private System.Windows.Forms.RichTextBox MsgBox;
+        private DevExpress.XtraGrid.Columns.GridColumn colmsg;
     }
 }

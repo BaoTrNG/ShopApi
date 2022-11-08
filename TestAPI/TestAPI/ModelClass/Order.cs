@@ -13,6 +13,7 @@ namespace TestAPI.ModelClass
         public string phone { get; set; }
         public string status { get; set; }
         public string payment { get; set; }
+        public string msg { get; set; }
         public string address { get; set; }
         public string date { get; set; }
         public double total { get; set; }

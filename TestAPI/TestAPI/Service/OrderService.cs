@@ -27,6 +27,7 @@ namespace TestAPI.Data
            await _order.Find(m => m.buyer == order.buyer).ToListAsync();
         public async Task CountOrder(Response res, string buyer)
         {
+            // await _order.DeleteManyAsync(m => m.buyer == buyer);
             var a = await _order.CountDocumentsAsync(m => m.buyer == buyer && m.status == "done");
             res.code = Convert.ToInt32(a);
             double sum = 0;
@@ -111,8 +112,14 @@ namespace TestAPI.Data
 
         public async Task Create(Order order) =>
        await _order.InsertOneAsync(order);
-        public async Task UpdateOrder(string id, Order temp)
+        public async Task UpdateOrder(Response res, string id, Order temp)
         {
+            if (temp.payment == "ATM")
+            {
+                temp.msg = "Chuyển khoản qua số tài khoản momo 0932043965 \nChuyển khoản qua số tài khoản sacombank 0602 0522 7582 \nSố Tiền: " + temp.total + " VND";
+
+            }
+            else temp.msg = "Đang xử lý";
             var mongoClient = new MongoClient("mongodb+srv://AuthLogin:123@shopdb.40xjquu.mongodb.net/test");
             var session = mongoClient.StartSession();
             var ORDER = session.Client.GetDatabase("Shop").GetCollection<Order>("Order");
@@ -137,11 +144,14 @@ namespace TestAPI.Data
                     Console.WriteLine("normal");
                     await ORDER.ReplaceOneAsync(m => m.Id == id, temp);
                 }
-
+                res.code = 1;
+                res.msg = "success";
                 session.CommitTransaction();
             }
             catch (Exception e)
             {
+                res.code = 0;
+                res.msg = e.Message;
                 Console.WriteLine("exception: " + e.Message);
                 session.AbortTransaction();
             }
@@ -190,8 +200,56 @@ namespace TestAPI.Data
                 session.AbortTransaction();
             }
         }
+
+        public async Task CreateOrder(Response res, Order order)
+        {
+            if (order.payment == "ATM")
+            {
+                order.msg = "Chuyển khoản qua số tài khoản momo 0932043965 \nChuyển khoản qua số tài khoản sacombank 0602 0522 7582 \nSố Tiền: " + order.total + " VND";
+
+            }
+            else order.msg = "Đang xử lý";
+            var json = order.ToJson();
+            Console.WriteLine(json);
+            var mongoClient = new MongoClient("mongodb+srv://AuthLogin:123@shopdb.40xjquu.mongodb.net/test");
+            var session = mongoClient.StartSession();
+            var ORDER = session.Client.GetDatabase("Shop").GetCollection<Order>("Order");
+            var ITEMS = session.Client.GetDatabase("Shop").GetCollection<Items>("Items");
+            var TEMPCART = session.Client.GetDatabase("Shop").GetCollection<Carts>("TempCarts");
+            //Begin transaction
+            session.StartTransaction();
+            try
+            {
+                foreach (CartItem item in order.items) //update items trong ko
+                {
+                    var check = ITEMS.Find(m => m.Id == item.ID).FirstOrDefault();
+                    check.Remain = check.Remain - item.amount;
+                    await ITEMS.UpdateOneAsync(session, m => m.Id == item.ID, Builders<Items>.Update.Set("Remain", check.Remain));
+                }
+
+                await ORDER.InsertOneAsync(session, order); // tạo order
+
+                var cart = TEMPCART.Find(m => m.Id == order.buyer).FirstOrDefault();
+                cart.items.Clear();
+                cart.total = 0;
+                await TEMPCART.UpdateOneAsync(session, m => m.Id == order.buyer, Builders<Carts>.Update.Set("items", cart.items).Set("total", cart.total));
+                res.code = 1;
+                res.msg = "ok";
+                session.CommitTransaction();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("exception: " + e.Message);
+                res.code = 0;
+                res.msg = e.Message;
+                session.AbortTransaction();
+            }
+        }
+
+
+
+
+
+
     }
-
-
-
 }

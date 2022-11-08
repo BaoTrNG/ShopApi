@@ -372,8 +372,8 @@ app.MapPut("/api/updatecart", async (TempCartService service, Carts temp) =>
 app.MapPost("/api/findorder", async (OrderService service, Order temp) =>
 {
     var check = await service.FindOrder(temp);
-
     return check;
+
 });
 
 app.MapPost("/api/userorders", async (OrderService service, Order target) =>
@@ -403,13 +403,13 @@ app.MapGet("/api/getorderstatus/{id}", async (OrderService service, string id) =
 
 
 
-/*app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
+app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
 {
+    Response res = new Response();
+    await service.CreateOrder(res, temp);
+    return res;
 
-    await service.Create(temp);
-    return Results.Ok();
- 
-}); */
+});
 //tạo order
 app.MapPost("/api/createp", async (OrderService service, Order temp) =>
 {
@@ -421,9 +421,9 @@ app.MapPost("/api/createp", async (OrderService service, Order temp) =>
 
 app.MapPut("/api/updateorder", async (OrderService service, Order temp) =>
 {
-
-    await service.UpdateOrder(temp.Id, temp);
-    return Results.Ok();
+    Response res = new Response();
+    await service.UpdateOrder(res, temp.Id, temp);
+    return res;
 
 });
 

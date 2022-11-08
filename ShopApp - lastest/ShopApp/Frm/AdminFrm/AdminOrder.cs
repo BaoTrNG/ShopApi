@@ -38,6 +38,7 @@ namespace ShopApp.Frm.AdminFrm
         private string payment;
         private double total;
         private string date;
+        private string msg;
 
         // private List<CartItem> items;
         private List<Order> orders;
@@ -80,6 +81,7 @@ namespace ShopApp.Frm.AdminFrm
         {
             Statusbox.Enabled = false;
             Updatebtn.Visible = false;
+            MsgBox.Text = gridView1.GetFocusedRowCellValue("msg").ToString();
             id = gridView1.GetFocusedRowCellValue("id").ToString();
 
 
@@ -164,6 +166,7 @@ namespace ShopApp.Frm.AdminFrm
         private void UpdateOrder()
         {
             Order temp = orders.Find(x => x.id == id);
+            temp.msg = msg;
             temp.status = status;
             if (temp.admins != null)
             {
@@ -242,6 +245,7 @@ namespace ShopApp.Frm.AdminFrm
         private void EditOrderbtn_Click(object sender, EventArgs e)
         {
             Statusbox.Enabled = true;
+            MsgBox.ReadOnly = false;
             Updatebtn.Visible = true;
             code = 1;
         }
@@ -273,6 +277,11 @@ namespace ShopApp.Frm.AdminFrm
         private void Statusbox_SelectedIndexChanged(object sender, EventArgs e)
         {
             status = Statusbox.SelectedItem.ToString();
+        }
+
+        private void MsgBox_TextChanged(object sender, EventArgs e)
+        {
+            msg = MsgBox.Text;
         }
     }
 }

@@ -359,6 +359,7 @@ namespace ShopApp.Frm
 
         private void Login_Load(object sender, EventArgs e)
         {
+
             Program.tempCart = new TempCart();
             Program.tempCart.items = new List<CartItem>();
 

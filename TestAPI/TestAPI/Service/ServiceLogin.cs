@@ -145,6 +145,7 @@ namespace TestAPI.Data
         {
             try
             {
+
                 await _users.UpdateOneAsync(m => m.Id == temp.Id, Builders<Users>.Update.Set("Pass", temp.Pass));
                 res.code = 1;
                 res.msg = "ok";
