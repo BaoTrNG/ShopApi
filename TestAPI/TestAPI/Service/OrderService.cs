@@ -119,7 +119,6 @@ namespace TestAPI.Data
             var ITEMS = session.Client.GetDatabase("Shop").GetCollection<Items>("Items");
             var TempOrder = ORDER.Find(m => m.Id == id).FirstOrDefault();
             session.StartTransaction();
-
             try
             {
                 if (temp.status == "canceled" && TempOrder.status != "canceled")

@@ -42,3 +42,11 @@ D:\WEB API\TestAPI\TestAPI\obj\Release\net6.0\ref\TestAPI.dll
 D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\System.Text.Encodings.Web.dll
 D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\System.Text.Json.dll
 D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\runtimes\browser\lib\net6.0\System.Text.Encodings.Web.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\WEB API\TestAPI\TestAPI\bin\Release\net6.0\System.IdentityModel.Tokens.Jwt.dll

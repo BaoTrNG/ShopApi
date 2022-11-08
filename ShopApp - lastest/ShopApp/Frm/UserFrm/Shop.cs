@@ -23,6 +23,7 @@ using DevExpress.Utils;
 
 
 using DevExpress.XtraSplashScreen;
+using System.Net.Http;
 
 namespace ShopApp.Frm.UserFrm
 {
@@ -76,17 +77,62 @@ namespace ShopApp.Frm.UserFrm
 
           }*/
 
+        /*  private void LoadPage()
+          {
+              try
+              {
+                  Console.WriteLine(Program.JwtToken);
+                  cart.buyer = Program.Username;
+                  cart.date = DateTime.Now.ToString("dd/MM/yyyy");
+                  cart.status = "pending";
+
+                  gridView1.RowHeight = 50;
+                  // var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
+                  var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIGetItems);
+                  httpWebRequest.ContentType = "application/json";
+                  httpWebRequest.Method = "GET";
+
+                  var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                  using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                  {
+                      string result = streamReader.ReadToEnd();
+
+                      var ItemsList = JsonSerializer.Deserialize<List<Items>>(result);
+
+                      BindingList<PictureObject> list = new BindingList<PictureObject>();
+                      foreach (var item in ItemsList)
+                      {
+                          list.Add(new PictureObject(item.id, item.brand, item.price, item.remain, item.image, item.url));
+
+                      }
+
+                      gridControl1.DataSource = list;
+                      gridView1.OptionsBehavior.Editable = false;
+                      gridView1.Columns["linkvid"].Visible = false;
+
+                  }
+              }
+              catch (Exception ex)
+              {
+                  MessageBox.Show(ex.Message);
+              }
+          }*/
         private void LoadPage()
         {
             try
             {
+                Console.WriteLine(Program.JwtToken);
                 cart.buyer = Program.Username;
                 cart.date = DateTime.Now.ToString("dd/MM/yyyy");
                 cart.status = "pending";
 
                 gridView1.RowHeight = 50;
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
+                var httpclient = new WebClient();
+
+                // var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIGetItems);
                 httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + Program.JwtToken);
                 httpWebRequest.Method = "GET";
 
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -120,7 +166,8 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 string Buyer = "{\"id\":\"" + Program.Username + "\"}";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findcart");
+                //"https://shopapiptithcm.azurewebsites.net/api/findcart"
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIFindCart);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -252,7 +299,9 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 // Console.WriteLine("test");
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkremain" + "/" + id + "/" + remain);
+                /*https://shopapiptithcm.azurewebsites.net/api/checkremain+ "/" + id + "/" + remain */
+                string url = Program.APICheckRemain + "/" + id + "/" + remain;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "GET";
 
@@ -277,7 +326,8 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 string json = JsonSerializer.Serialize(Program.tempCart);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+                //"https://shopapiptithcm.azurewebsites.net/api/updatecart"
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateCart);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

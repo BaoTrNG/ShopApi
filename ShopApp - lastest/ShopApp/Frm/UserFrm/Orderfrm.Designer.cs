@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            DevExpress.XtraGrid.GridLevelNode gridLevelNode2 = new DevExpress.XtraGrid.GridLevelNode();
+            DevExpress.XtraGrid.GridLevelNode gridLevelNode1 = new DevExpress.XtraGrid.GridLevelNode();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.Updatebtn = new DevExpress.XtraEditors.SimpleButton();
             this.CancelOrderbtn = new DevExpress.XtraEditors.SimpleButton();
             this.EditOrderbtn = new DevExpress.XtraEditors.SimpleButton();
             this.Statusbox = new System.Windows.Forms.TextBox();
@@ -51,17 +52,21 @@
             this.coldate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coltotal = new DevExpress.XtraGrid.Columns.GridColumn();
             this.gridControl1 = new DevExpress.XtraGrid.GridControl();
-            this.Updatebtn = new DevExpress.XtraEditors.SimpleButton();
+            this.panelControl2 = new DevExpress.XtraEditors.PanelControl();
+            this.panelControl3 = new DevExpress.XtraEditors.PanelControl();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
             this.panelControl1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PhoneBox.Properties)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).BeginInit();
             this.SuspendLayout();
             // 
             // panelControl1
             // 
+            this.panelControl1.Controls.Add(this.panelControl2);
             this.panelControl1.Controls.Add(this.Updatebtn);
             this.panelControl1.Controls.Add(this.CancelOrderbtn);
             this.panelControl1.Controls.Add(this.EditOrderbtn);
@@ -79,6 +84,15 @@
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(720, 260);
             this.panelControl1.TabIndex = 1;
+            // 
+            // Updatebtn
+            // 
+            this.Updatebtn.Location = new System.Drawing.Point(225, 218);
+            this.Updatebtn.Name = "Updatebtn";
+            this.Updatebtn.Size = new System.Drawing.Size(127, 29);
+            this.Updatebtn.TabIndex = 16;
+            this.Updatebtn.Text = "Cập Nhật";
+            this.Updatebtn.Click += new System.EventHandler(this.Updatebtn_Click);
             // 
             // CancelOrderbtn
             // 
@@ -260,9 +274,9 @@
             // 
             this.gridControl1.DataSource = this.orderBindingSource;
             this.gridControl1.EmbeddedNavigator.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
-            gridLevelNode2.RelationName = "Level1";
+            gridLevelNode1.RelationName = "Level1";
             this.gridControl1.LevelTree.Nodes.AddRange(new DevExpress.XtraGrid.GridLevelNode[] {
-            gridLevelNode2});
+            gridLevelNode1});
             this.gridControl1.Location = new System.Drawing.Point(-2, 0);
             this.gridControl1.MainView = this.gridView1;
             this.gridControl1.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
@@ -273,14 +287,19 @@
             this.gridView1});
             this.gridControl1.Click += new System.EventHandler(this.gridControl1_Click);
             // 
-            // Updatebtn
+            // panelControl2
             // 
-            this.Updatebtn.Location = new System.Drawing.Point(225, 218);
-            this.Updatebtn.Name = "Updatebtn";
-            this.Updatebtn.Size = new System.Drawing.Size(127, 29);
-            this.Updatebtn.TabIndex = 16;
-            this.Updatebtn.Text = "Cập Nhật";
-            this.Updatebtn.Click += new System.EventHandler(this.Updatebtn_Click);
+            this.panelControl2.Location = new System.Drawing.Point(727, 0);
+            this.panelControl2.Name = "panelControl2";
+            this.panelControl2.Size = new System.Drawing.Size(319, 239);
+            this.panelControl2.TabIndex = 2;
+            // 
+            // panelControl3
+            // 
+            this.panelControl3.Location = new System.Drawing.Point(716, 350);
+            this.panelControl3.Name = "panelControl3";
+            this.panelControl3.Size = new System.Drawing.Size(619, 260);
+            this.panelControl3.TabIndex = 2;
             // 
             // Orderfrm
             // 
@@ -289,6 +308,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1342, 609);
+            this.Controls.Add(this.panelControl3);
             this.Controls.Add(this.panelControl1);
             this.Controls.Add(this.gridControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
@@ -304,6 +324,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.orderBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.panelControl3)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -331,5 +353,7 @@
         private DevExpress.XtraEditors.SimpleButton CancelOrderbtn;
         private DevExpress.XtraEditors.SimpleButton EditOrderbtn;
         private DevExpress.XtraEditors.SimpleButton Updatebtn;
+        private DevExpress.XtraEditors.PanelControl panelControl2;
+        private DevExpress.XtraEditors.PanelControl panelControl3;
     }
 }

@@ -45,7 +45,9 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 string Buyer = "{\"buyer\":\"" + Program.Username + "\"}";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/userorders");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/userorders");
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateUser);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -60,10 +62,19 @@ namespace ShopApp.Frm.UserFrm
                     Response res = JsonSerializer.Deserialize<Response>(result);
 
                     UserName.Text = "Tên Người Dùng " + Program.Username;
-                    TotalOrder.Text = "Số Đơn Hàng Đã Giao Thành Công " + res.code.ToString();
-                    string money = res.msg.Insert(2, ".");
-                    TotalMoney.Text = "Số Tiền Đã Chi " + money + " VNĐ";
+                    if (res.code != 0)
+                    {
+                        TotalOrder.Text = "Số Đơn Hàng Đã Giao Thành Công " + res.code.ToString();
+                        string money = res.msg.Insert(2, ".");
+                        TotalMoney.Text = "Số Tiền Đã Chi " + money + " VNĐ";
+                    }
+                    else
+                    {
+                        TotalOrder.Text = "Số Đơn Hàng Đã Giao Thành Công " + res.code.ToString();
+                        TotalMoney.Text = "Số Tiền Đã Chi " + res.msg + " VNĐ";
+                    }
                 }
+
             }
             catch (Exception ex)
             {
@@ -79,19 +90,93 @@ namespace ShopApp.Frm.UserFrm
             code = 1;
         }
 
+        private void UpdatePhone()
+        {
+            try
+            {
+                string Buyer = "{\"id\":\"" + Program.Username + "\",\"phone\":\"" + phone + "\"}";
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdatePhone);
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "PUT";
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string json = Buyer;
+                    streamWriter.Write(json);
+                }
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    string result = streamReader.ReadToEnd();
+                    Response res = JsonSerializer.Deserialize<Response>(result);
+                    if (res.code == 1)
+                    {
+                        MessageBox.Show("sửa thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("sửa thất bại");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void UpdatePass()
+        {
+            try
+            {
+                string Buyer = "{\"id\":\"" + Program.Username + "\",\"pass\":\"" + pass + "\"}";
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdatePass);
+                httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Method = "PUT";
+                using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
+                {
+                    string json = Buyer;
+                    streamWriter.Write(json);
+                }
+                var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
+                using (var streamReader = new StreamReader(httpResponse.GetResponseStream()))
+                {
+                    string result = streamReader.ReadToEnd();
+                    Response res = JsonSerializer.Deserialize<Response>(result);
+                    if (res.code == 1)
+                    {
+                        MessageBox.Show("sửa thành công");
+                    }
+                    else
+                    {
+                        MessageBox.Show("sửa thất bại");
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
         private void Updatebtn_Click(object sender, EventArgs e)
         {
             if (code == 1)
             {
+                UpdatePhone();
                 resetvalue();
+                Phonebox.Text = "";
             }
             else if (code == 0)
             {
                 if (ispass && OldPass.Text.Count() != 0)
                 {
                     //update
-                    Console.WriteLine("ok");
+                    UpdatePass();
                     resetvalue();
+                    OldPass.Text = "";
+                    NewPass.Text = "";
+                    ConfirmPass.Text = "";
                 }
                 else
                 {
@@ -137,6 +222,7 @@ namespace ShopApp.Frm.UserFrm
         private void Pass_Click(object sender, EventArgs e)
         {
             resetvalue();
+
             OldPass.Visible = true;
             NewPass.Visible = true;
             ConfirmPass.Visible = true;

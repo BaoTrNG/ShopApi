@@ -1,29 +1,73 @@
 ﻿using TestAPI.ModelClass;
 using TestAPI.Data;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authorization;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<ShopDbSetting>(builder.Configuration.GetSection("ShopDbSetting"));
 builder.Services.AddSingleton<ServiceLogin>();
 builder.Services.AddSingleton<UsersService>();
 builder.Services.AddSingleton<TempCartService>();
 builder.Services.AddSingleton<OrderService>();
+builder.Services.AddControllers();
 
-//builder.Services.AddSingleton<Test>();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    // options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.RequireHttpsMetadata = false;
+    o.SaveToken = true;
+
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey
+        (Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
+
+
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        //  ValidateLifetime = true,
+        // ClockSkew = TimeSpan.Zero
+
+    };
+});
+
+builder.Services.AddAuthorization();
+
 
 
 var app = builder.Build();
-string art = "haha⠀ ";
+app.UseHttpsRedirection();
 
-app.MapGet("", () => art);
+
+string test = "test⠀ ";
+
+app.MapGet("", () => test);
 
 
 
 
 ///////////////////////// USER SERVICE //////////////////////////
 
+app.MapGet("/api/get", async (ServiceLogin moviesService) => await moviesService.Get()).RequireAuthorization();
+app.MapGet("/api/test",
+() => "Hello World!").RequireAuthorization();
 
-app.MapGet("/api/get", async (ServiceLogin moviesService) => await moviesService.Get());
-
-
+app.MapPost("/api/loginv2", [AllowAnonymous] async (ServiceLogin login, Users user) =>
+{
+    Response res = new Response();
+    await login.auth(res, user);
+    return res;
+    // return Check is null ? 0 : 1;
+});
 
 
 //Auth user by url parameter
@@ -55,7 +99,7 @@ app.MapPost("/api/login", async (ServiceLogin login, Users user) =>
                 return 11;
             }
         }
-        else return 13;
+        else return 13; //banned acc
     }
     // return Check is null ? 0 : 1;
 });
@@ -84,6 +128,20 @@ app.MapPost("/api/createuser", async (ServiceLogin service, Users user) =>
     return res;
 });
 
+app.MapPut("/api/updatephone", async (ServiceLogin service, Users user) =>
+{
+    Response res = new Response();
+    await service.UpdatePhone(res, user);
+    return res;
+});
+
+app.MapPut("/api/updatepass", async (ServiceLogin service, Users user) =>
+{
+    Response res = new Response();
+    await service.UpdatePass(res, user);
+    return res;
+});
+
 
 /*app.MapPost("/api/createuser", async (ServiceLogin service, Users user) =>
 {
@@ -106,6 +164,8 @@ app.MapPut("/api/updateuseradmin", (ServiceLogin service, Users user) =>
 
 //Find all items
 app.MapGet("/api/getitems", async (UsersService service) => await service.GetAllItems());
+
+app.MapGet("/api/getitemsv2", async (UsersService service) => await service.GetAllItems()).RequireAuthorization();
 
 app.MapGet("/api/checkremain/{id}/{remain}", async (UsersService service, string id, int remain) =>
 {
@@ -342,15 +402,15 @@ app.MapGet("/api/getorderstatus/{id}", async (OrderService service, string id) =
 });
 
 
-//tạo order
-app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
+
+/*app.MapPost("/api/createorder", async (OrderService service, Order temp) =>
 {
 
     await service.Create(temp);
     return Results.Ok();
-
-});
-
+ 
+}); */
+//tạo order
 app.MapPost("/api/createp", async (OrderService service, Order temp) =>
 {
     Response res = new Response();
@@ -411,5 +471,6 @@ app.MapPost("/api/getlistadmin", async (OrderService service, Order temp) =>
     admin = service.GetAdmin(temp.Id, admin);
     return admin;
 });
-
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

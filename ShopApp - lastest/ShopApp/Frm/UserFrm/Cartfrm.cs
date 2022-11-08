@@ -60,7 +60,8 @@ namespace ShopApp.Frm.UserFrm
             {
                 //   gridView1.RowHeight = 50;
                 string Buyer = "{\"id\":\"" + Program.Username + "\"}";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findcart");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findcart");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIFindCart);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -159,7 +160,8 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 string json = JsonSerializer.Serialize(Program.tempCart);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+                // var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateCart);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -195,7 +197,8 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 string json = JsonSerializer.Serialize(Program.tempCart);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updatecart");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateCart);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -276,7 +279,8 @@ namespace ShopApp.Frm.UserFrm
                 order.total = Program.tempCart.total;
                 var json = JsonSerializer.Serialize(order);
                 Console.WriteLine(json);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createp");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createp")
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APICreateOrder);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -363,7 +367,8 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 var json = JsonSerializer.Serialize(Program.tempCart.items);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkitemv2");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkitemv2");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APICheckItem);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

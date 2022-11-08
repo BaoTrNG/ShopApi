@@ -42,3 +42,11 @@ D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\refint\TestAPI.dll
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.pdb
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\TestAPI.genruntimeconfig.cache
 D:\WEB API\TestAPI\TestAPI\obj\Debug\net6.0\ref\TestAPI.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+D:\WEB API\TestAPI\TestAPI\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll

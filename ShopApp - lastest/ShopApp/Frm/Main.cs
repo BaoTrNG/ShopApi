@@ -116,7 +116,8 @@ namespace ShopApp.Frm
         private void GetOrder()
         {
             string json = "{\"buyer\":\"" + Program.Username + "\"}";
-            var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findorder");
+            /*"https://shopapiptithcm.azurewebsites.net/api/findorder"*/
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIFindOrder);
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.Method = "POST";
             using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

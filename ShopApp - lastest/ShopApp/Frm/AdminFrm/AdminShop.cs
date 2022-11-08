@@ -113,8 +113,11 @@ namespace ShopApp.Frm.AdminFrm
                 cart.status = "pending";
 
                 gridView1.RowHeight = 50;
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
+                //                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getitems");
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIGetItems);
                 httpWebRequest.ContentType = "application/json";
+                httpWebRequest.Headers.Add("Authorization", "Bearer " + Program.JwtToken);
                 httpWebRequest.Method = "GET";
 
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -210,7 +213,9 @@ namespace ShopApp.Frm.AdminFrm
             // Console.WriteLine("test");
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkremain" + "/" + id + "/" + remain);
+                // var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/checkremain" + "/" + id + "/" + remain);
+                string url = Program.APICheckRemain + "/" + id + "/" + remain;
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
 
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "GET";
@@ -294,7 +299,8 @@ namespace ShopApp.Frm.AdminFrm
         {
             try
             {
-                string url = "https://shopapiptithcm.azurewebsites.net/api/checkitemid/" + ID;
+                //string url = "https://shopapiptithcm.azurewebsites.net/api/checkitemid/" + ID;
+                string url = Program.APICheckItemId + "/" + ID;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "GET";
@@ -340,7 +346,9 @@ namespace ShopApp.Frm.AdminFrm
             Console.WriteLine(json);
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createitem");
+                //                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/createitem");
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APICreateItem);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -375,7 +383,8 @@ namespace ShopApp.Frm.AdminFrm
         {
             try
             {
-                string url = "https://shopapiptithcm.azurewebsites.net/api/deleteitem/" + ID;
+                //string url = "https://shopapiptithcm.azurewebsites.net/api/deleteitem/" + ID;
+                string url = Program.APIDeleteItem + ID;
                 Console.WriteLine(url);
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.ContentType = "application/json";
@@ -417,7 +426,8 @@ namespace ShopApp.Frm.AdminFrm
             Console.WriteLine(json);
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateitem");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateitem");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateItem);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

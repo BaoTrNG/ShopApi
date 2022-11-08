@@ -47,7 +47,8 @@ namespace ShopApp.Frm.UserFrm
             try
             {
                 string json = "{\"buyer\":\"" + Program.Username + "\"}";
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findorder");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/findorder");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIFindOrder);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "POST";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -176,7 +177,8 @@ namespace ShopApp.Frm.UserFrm
                 temp.admins = Program.tempOrder.Where(p => p.id == temp.id).FirstOrDefault().admins;
                 string json = JsonSerializer.Serialize(temp);
                 Console.WriteLine(json);
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateorder");
+                // var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateorder");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateOrder);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
@@ -207,7 +209,8 @@ namespace ShopApp.Frm.UserFrm
         {
             try
             {
-                string url = "https://shopapiptithcm.azurewebsites.net/api/getorderstatus/" + id;
+                // string url = "https://shopapiptithcm.azurewebsites.net/api/getorderstatus/" + id;
+                string url = Program.APIGetOrderStatus + id;
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "GET";

@@ -55,7 +55,8 @@ namespace ShopApp.Frm.AdminFrm
         {
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getorder");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getorder");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIGetOrders);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "GET";
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -105,7 +106,7 @@ namespace ShopApp.Frm.AdminFrm
 
             }
 
-
+            Deletebtn.Visible = false;
         }
         private void LoadPage()
         {
@@ -127,6 +128,8 @@ namespace ShopApp.Frm.AdminFrm
             string json = "{ \"id\":\"" + id + "\"}";
             try
             {
+
+
                 var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/deleteorderadmin");
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
@@ -202,7 +205,9 @@ namespace ShopApp.Frm.AdminFrm
             Console.WriteLine("this is json " + json);
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateorderadmin");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateorderadmin");
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateOrderAdmin);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))

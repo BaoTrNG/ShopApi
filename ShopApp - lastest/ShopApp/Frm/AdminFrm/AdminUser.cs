@@ -35,7 +35,8 @@ namespace ShopApp.Frm.AdminFrm
         {
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getalluser");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/getalluser");
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIGetUsers);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "GET";
                 var httpResponse = (HttpWebResponse)httpWebRequest.GetResponse();
@@ -125,7 +126,9 @@ namespace ShopApp.Frm.AdminFrm
             Console.WriteLine(json);
             try
             {
-                var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateuseradmin");
+                //var httpWebRequest = (HttpWebRequest)WebRequest.Create("https://shopapiptithcm.azurewebsites.net/api/updateuseradmin");
+
+                var httpWebRequest = (HttpWebRequest)WebRequest.Create(Program.APIUpdateUserAdmin);
                 httpWebRequest.ContentType = "application/json";
                 httpWebRequest.Method = "PUT";
                 using (var streamWriter = new StreamWriter(httpWebRequest.GetRequestStream()))
