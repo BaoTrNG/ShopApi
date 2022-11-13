@@ -14,7 +14,7 @@ using System.Windows.Forms;
 using ShopApp.Model_Class;
 using DevExpress.XtraGrid.Views.Grid;
 using DevExpress.XtraGrid.Columns;
-
+using DevExpress.XtraReports.UI;
 
 namespace ShopApp.Frm.AdminFrm
 {
@@ -28,7 +28,7 @@ namespace ShopApp.Frm.AdminFrm
             Deletebtn.Visible = false;
             EditOrderbtn.Visible = false;
             PaymentBox.Enabled = false;
-
+            PrintBtn.Visible = false;
 
         }
         private string id;
@@ -92,7 +92,14 @@ namespace ShopApp.Frm.AdminFrm
             PaymentBox.Text = gridView1.GetFocusedRowCellValue("payment").ToString();
             PhoneBox.Text = gridView1.GetFocusedRowCellValue("phone").ToString();
             AddressBox.Text = gridView1.GetFocusedRowCellValue("address").ToString();
-
+            if (status == "delivering" || status == "done")
+            {
+                PrintBtn.Visible = true;
+            }
+            else
+            {
+                PrintBtn.Visible = false;
+            }
             if (status == "done" || status == "delivering" || status == "canceled")
             {
 
@@ -282,6 +289,28 @@ namespace ShopApp.Frm.AdminFrm
         private void MsgBox_TextChanged(object sender, EventArgs e)
         {
             msg = MsgBox.Text;
+        }
+
+        private void PrintBtn_Click(object sender, EventArgs e)
+        {
+
+            var order = orders.Find(x => x.id == id);
+            OrderReport report = new OrderReport(order);
+            List<OrderRP> items = new List<OrderRP>();
+            foreach (var item in order.items)
+            {
+                var temp = new OrderRP();
+                temp.id = item.id;
+                temp.amount = item.amount;
+                temp.price = item.price / item.amount;
+                temp.total = item.price;
+                items.Add(temp);
+            }
+            report.DataSource = order.items;
+            //  report.DataSource = items;
+            ReportPrintTool printTool = new ReportPrintTool(report);
+            printTool.ShowPreview();
+
         }
     }
 }

@@ -16,7 +16,8 @@ namespace TestAPI.Data
             _order = mongoClient.GetDatabase(options.Value.DatabaseName)
                 .GetCollection<Order>("Order");
         }
-
+        public async Task test() =>
+          await _order.Find(_ => true).ToListAsync();
         public async Task<List<Order>> Get() =>
            await _order.Find(_ => true).ToListAsync();
         public async Task<Order> GetStatus(string id) =>

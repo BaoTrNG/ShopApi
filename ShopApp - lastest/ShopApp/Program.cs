@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using DevExpress.LookAndFeel;
+using DevExpress.XtraReports.UI;
 using ShopApp.Frm;
+using ShopApp.Frm.AdminFrm;
 using ShopApp.Frm.UserFrm;
 using ShopApp.Model_Class;
 namespace ShopApp
@@ -78,12 +81,16 @@ namespace ShopApp
             tempOrder = new List<Order>();
             isload = false;
             isdoneload = false;
-            // IsValid = 0;
-            /*  Registry.SetValue(@"HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\Main\FeatureControl\FEATURE_BROWSER_EMULATION",
-      AppDomain.CurrentDomain.FriendlyName, 11000); */
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Login());
+
+
+
+
+
+            Application.Run();
             // Application.Run(new Main());
             //  Application.Run(new Shop());
         }

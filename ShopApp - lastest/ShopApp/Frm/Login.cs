@@ -376,8 +376,8 @@ namespace ShopApp.Frm
             textBox3.Visible = false;
             label4.Text = "";
 
-            textBox1.Text = "admin";
-            textBox2.Text = "123";
+            textBox1.Text = "";
+            textBox2.Text = "";
 
         }
 
@@ -457,6 +457,11 @@ namespace ShopApp.Frm
         {
 
             this.Close();
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

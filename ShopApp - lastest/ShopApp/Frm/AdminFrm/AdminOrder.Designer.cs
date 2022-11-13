@@ -37,7 +37,9 @@
             this.coladdress = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coldate = new DevExpress.XtraGrid.Columns.GridColumn();
             this.coltotal = new DevExpress.XtraGrid.Columns.GridColumn();
+            this.colmsg = new DevExpress.XtraGrid.Columns.GridColumn();
             this.panelControl1 = new DevExpress.XtraEditors.PanelControl();
+            this.PrintBtn = new DevExpress.XtraEditors.SimpleButton();
             this.PaymentBox = new DevExpress.XtraEditors.TextEdit();
             this.Statusbox = new System.Windows.Forms.ComboBox();
             this.Updatebtn = new DevExpress.XtraEditors.SimpleButton();
@@ -51,7 +53,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.labelControl1 = new DevExpress.XtraEditors.LabelControl();
             this.MsgBox = new System.Windows.Forms.RichTextBox();
-            this.colmsg = new DevExpress.XtraGrid.Columns.GridColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridControl1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.gridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.panelControl1)).BeginInit();
@@ -144,8 +145,16 @@
             this.coltotal.VisibleIndex = 5;
             this.coltotal.Width = 94;
             // 
+            // colmsg
+            // 
+            this.colmsg.FieldName = "msg";
+            this.colmsg.MinWidth = 25;
+            this.colmsg.Name = "colmsg";
+            this.colmsg.Width = 94;
+            // 
             // panelControl1
             // 
+            this.panelControl1.Controls.Add(this.PrintBtn);
             this.panelControl1.Controls.Add(this.PaymentBox);
             this.panelControl1.Controls.Add(this.Statusbox);
             this.panelControl1.Controls.Add(this.Updatebtn);
@@ -163,6 +172,15 @@
             this.panelControl1.Name = "panelControl1";
             this.panelControl1.Size = new System.Drawing.Size(630, 372);
             this.panelControl1.TabIndex = 2;
+            // 
+            // PrintBtn
+            // 
+            this.PrintBtn.Location = new System.Drawing.Point(453, 175);
+            this.PrintBtn.Name = "PrintBtn";
+            this.PrintBtn.Size = new System.Drawing.Size(127, 29);
+            this.PrintBtn.TabIndex = 19;
+            this.PrintBtn.Text = "In Hoá Đơn";
+            this.PrintBtn.Click += new System.EventHandler(this.PrintBtn_Click);
             // 
             // PaymentBox
             // 
@@ -295,13 +313,6 @@
             this.MsgBox.Text = "";
             this.MsgBox.TextChanged += new System.EventHandler(this.MsgBox_TextChanged);
             // 
-            // colmsg
-            // 
-            this.colmsg.FieldName = "msg";
-            this.colmsg.MinWidth = 25;
-            this.colmsg.Name = "colmsg";
-            this.colmsg.Width = 94;
-            // 
             // AdminOrder
             // 
             this.Appearance.BackColor = System.Drawing.Color.Gray;
@@ -352,5 +363,6 @@
         private DevExpress.XtraEditors.TextEdit PaymentBox;
         private System.Windows.Forms.RichTextBox MsgBox;
         private DevExpress.XtraGrid.Columns.GridColumn colmsg;
+        private DevExpress.XtraEditors.SimpleButton PrintBtn;
     }
 }
